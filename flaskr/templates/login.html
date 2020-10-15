@@ -9,42 +9,60 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" type="text/css" href="css/style.css">
-  <title>Sign Up</title>
-    <title>Sign Up!</title>
+    <link rel="stylesheet" type="text/css" href={{ url_for('static', filename='style.css') }}>
+  <title>Log In</title>
+    <title>Log In</title>
   </head>
   <body style="background-color:rgb(223, 230, 224);">
-    <!-- <h1>Hello, world!</h1> -->
+	<!--Navbar-->
+		<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #86E49E;">
+			<a class="navbar-brand" href="#"><img src="https://via.placeholder.com/50" width="30" height="30" alt="">(Yo)UB Sustainable</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarNav">
+				<ul class="navbar-nav mr-auto">
+					<li class="nav-item">
+						<a class="nav-link" href="index.html">Home<span class="sr-only">(current)</span></a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="challenge.html">Challenges</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="friends.html">Friends</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="userdashboard.html">Dashboard</a>
+					</li>
+				</ul>
+				<!--<a href="login.html" class="btn btn-sm btn-outline-success my-2 my-sm-0">Log In</a>-->
+			</div>
+		</nav>
+	<!--end of Navbar-->
 
     <div class="containter">
         <div class="row">
           <div class="col">
-            
+
           </div>
           <div class="col-6">
             <div class="card text-center bg-secondary">
               <div class="card-header">
-                <h3> SIGN UP</h2> 
+                <h3>LOG IN</h3>
               </div>
               <div class="card-body">
                 <form>
-                  <label for="fname">First name:</label><br>
-                  <input type="text" id="fname" name="fname"><br>
-                  <label for="lname">Last name:</label><br>
-                  <input type="text" id="lname" name="lname"><br>
                   <label for="username">Username: </label><br>
                   <input type="text" id="username" name="username"><br>
                   <label for="password">Password:</label><br>
                   <input type="text" id="password" name="password"><br>
-                  <label for="conf_password">Confirm password:</label><br>
-                  <input type="text" id="conf_password" name="conf_password"><br>
-                  <label for="checkbox">Would you like to receive reminder texts?</label>
+                  <label for="checkbox">Forgot password?</label>
                   <input type="checkbox" id="textnotifs" name="texts" value="texts"><br>
                 </form>
-                <a href="#" class="btn btn-primary">Sign Up</a>
+                <a href="#" class="btn btn-primary">Log In</a>
               </div>
 			  <div>
-				<a href="login.html">Have an account? Login here.</a>
+				<a href="signup.html">Don't have an account? Register Here.</a>
 			  </div>
               <!-- <div class="card-footer text-muted">
                 2 days ago
@@ -52,7 +70,7 @@
             </div>
           </div>
           <div class="col">
-      
+
           </div>
         </div>
     </div>
