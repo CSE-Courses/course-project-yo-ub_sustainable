@@ -40,7 +40,31 @@ def create_app(test_config=None):
 
     @app.route("/challenge")
     def chall():
-        return render_template("challenge.html")
+        return render_template("challenge_list.html")
+    
+    @app.route("/challenge1")
+    def chall_pg1():
+        return render_template("challenge_pages/challenge1.html")
+    
+    @app.route("/challenge2")
+    def chall_pg2():
+        return render_template("challenge_pages/challenge2.html")
+
+    @app.route("/challenge3")
+    def chall_pg3():
+        return render_template("challenge_pages/challenge3.html")
+
+    @app.route("/challenge4")
+    def chall_pg4():
+        return render_template("challenge_pages/challenge4.html")
+
+    @app.route("/challenge5")
+    def chall_pg5():
+        return render_template("challenge_pages/challenge5.html")
+    
+    @app.route("/challenge6")
+    def chall_pg6():
+        return render_template("challenge_pages/challenge6.html")
 
     @app.route("/friends")
     def friend():
