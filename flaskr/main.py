@@ -74,6 +74,14 @@ def create_app(test_config=None):
     def friend():
         return render_template("friends.html")
 
+    @app.route("/publicProfileFriend")
+    def publicProfileFriend():
+        return render_template("publicProfileFriend.html")
+
+    @app.route("/publicProfileNotFriend")
+    def publicProfileNotFriend():
+        return render_template("publicProfileNotFriend.html")
+
   #  @app.route("/login")
   #  def login():
   #      return render_template("login.html")
