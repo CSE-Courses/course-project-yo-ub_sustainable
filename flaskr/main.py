@@ -104,3 +104,5 @@ def create_app(test_config=None):
         return render_template("static/css/style.css")
 
     return app
+    
+    
