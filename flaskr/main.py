@@ -2,7 +2,11 @@ import os
 
 from flask import Flask
 from flask import render_template
-
+from flask import request
+from flask import redirect
+from flask import url_for
+from flask import session
+from flask import flash
 
 def create_app(test_config=None):
     # create and configure the app
@@ -70,9 +74,26 @@ def create_app(test_config=None):
     def friend():
         return render_template("friends.html")
 
-    @app.route("/login")
+  #  @app.route("/login")
+  #  def login():
+  #      return render_template("login.html")
+    
+    @app.route('/login', methods=['GET', 'POST'])
     def login():
-        return render_template("login.html")
+        error = None
+        if request.method == 'POST':
+            if (request.form['username'] != 'test') or request.form['password'] != 'test': error = 'Invalid Credentials. Please try again.'
+            else:
+                session['logged_in'] = True
+                flash('You are logged in.')
+                return redirect(url_for('home'))
+        return render_template('login.html', error=error)
+     
+    @app.route('/logout')
+    def logout():
+        session.pop('logged_in', None)
+        flash('You are logged out.')
+        return redirect(url_for('home'))
 
     @app.route("/signup")
     def signup():
