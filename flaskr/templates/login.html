@@ -51,15 +51,17 @@
                 <h3>LOG IN</h3>
               </div>
               <div class="card-body">
-                <form>
+                <form action="{{ url_for('login' }}" class="active"> </form>
                   <label for="username">Username: </label><br>
-                  <input type="text" id="username" name="username"><br>
+                  <input type="text" id="username" name="username" required><br>
                   <label for="password">Password:</label><br>
-                  <input type="text" id="password" name="password"><br>
+                  <input type="text" id="password" name="password" required><br>
                   <label for="checkbox">Forgot password?</label>
                   <input type="checkbox" id="textnotifs" name="texts" value="texts"><br>
+                  <div class="msg">{{ msg }}</div>
+                  <!-- <a href="#" class="btn btn-primary">Log In</a> -->
+                  <input type="submit" value="Login">
                 </form>
-                <a href="#" class="btn btn-primary">Log In</a>
               </div>
 			  <div>
 				<a href="signup.html">Don't have an account? Register Here.</a>

@@ -1,8 +1,16 @@
 import os
 
 from flask import Flask
-from flask import render_template
+from flask import render_template, request
+from flask_mysqldb import MySQL
+import MySQLdb.cursors
+import mysql.connector
 
+app = Flask(__name__)
+app.config['MYSQL_HOST'] = 'localhost'
+app.config['MYSQL_USER'] = 'root'
+app.config['MYSQL_PASSWORD'] = 'root'
+app.config['MYSQL_DB'] = 'myDB'
 
 def create_app(test_config=None):
     # create and configure the app
@@ -46,9 +54,31 @@ def create_app(test_config=None):
     def friend():
         return render_template("friends.html")
 
-    @app.route("/login")
+    @app.route("/login", methods=['GET', 'POST'])
     def login():
-        return render_template("login.html")
+        msg = ''
+        if request.method == 'POST' and 'username' in request.form and 'password' in request.form:
+            username = request.form['username'] 
+            password = request.form['password']
+            #Check if acc exists
+            cursor = mysql.connector.connect(user='root', database='accounts')
+
+            cursor.execute('SELECT * FROM accounts WHERE username = %s AND passowrd = %s', (username, password, ))
+            account = cursor.fetchone()
+
+            if account:
+                #Current session
+                session = {}
+                session['loggedin'] = True
+                session['id'] = account['id']
+                session['username'] = account['username']
+
+                return 'Logged in successfuly!'
+            else:
+                #Error
+                msg = 'Incorrect username/password'
+
+        return render_template("login.html", msg=msg)
 
     @app.route("/signup")
     def signup():
@@ -59,3 +89,6 @@ def create_app(test_config=None):
         return render_template("static/css/style.css")
 
     return app
+
+if __name__ == "__main__":
+    app.run()
