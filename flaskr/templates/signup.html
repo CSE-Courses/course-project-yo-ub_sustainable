@@ -35,49 +35,41 @@
 						<a class="nav-link" href="{{ url_for('dash') }}">Dashboard</a>
 					</li>
 				</ul>
-				<!--<a href="{{ url_for('login') }}" class="btn btn-sm btn-outline-success my-2 my-sm-0">Log In</a>-->
 			</div>
 		</nav>	
 		<!--end of Navbar-->
 	
     <div class="containter">
         <div class="row">
-          <div class="col">
-            
-          </div>
-          <div class="col-6">
-            <div class="card text-center bg-secondary">
-              <div class="card-header">
-                <h3> SIGN UP</h2> 
-              </div>
-              <div class="card-body">
-                <form>
-                  <label for="fname">First name:</label><br>
-                  <input type="text" id="fname" name="fname"><br>
-                  <label for="lname">Last name:</label><br>
-                  <input type="text" id="lname" name="lname"><br>
-                  <label for="username">Username: </label><br>
-                  <input type="text" id="username" name="username"><br>
-                  <label for="password">Password:</label><br>
-                  <input type="text" id="password" name="password"><br>
-                  <label for="conf_password">Confirm password:</label><br>
-                  <input type="text" id="conf_password" name="conf_password"><br>
-                  <label for="checkbox">Would you like to receive reminder texts?</label>
-                  <input type="checkbox" id="textnotifs" name="texts" value="texts"><br>
-                </form>
-                <a href="#" class="btn btn-primary">Sign Up</a>
-              </div>
-			  <div>
-				<a href="login.html">Have an account? Login here.</a>
-			  </div>
-              <!-- <div class="card-footer text-muted">
-                2 days ago
-              </div> -->
-            </div>
-          </div>
-          <div class="col">
-      
-          </div>
+			<div class="col"></div>
+			<div class="col-6">
+				<div class="card text-center bg-secondary">
+					<div class="card-header">
+						<h3> SIGN UP</h3> 
+					</div>
+					<div class="card-body">
+					<form>
+						<label for="fname">First name:</label><br>
+						<input type="text" id="fname" name="fname"><br>
+						<label for="lname">Last name:</label><br>
+						<input type="text" id="lname" name="lname"><br>
+						<label for="username">Username: </label><br>
+						<input type="text" id="username" name="username"><br>
+						<label for="password">Password:</label><br>
+						<input type="text" id="password" name="password"><br>
+						<label for="conf_password">Confirm password:</label><br>
+						<input type="text" id="conf_password" name="conf_password"><br>
+						<label for="checkbox">Would you like to receive reminder texts?</label>
+						<input type="checkbox" id="textnotifs" name="texts" value="texts"><br>
+					</form>
+					<a href="#" class="btn btn-primary">Sign Up</a>
+					</div>
+					<div>
+						<a href="{{ url_for('login') }}">Have an account? Login here.</a>
+					</div>
+				</div>
+			</div>
+			<div class="col"></div>
         </div>
     </div>
 
