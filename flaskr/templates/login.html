@@ -1,44 +1,43 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<head>
+		<!-- Required meta tags -->
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+		<!-- Bootstrap CSS -->
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+		<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" type="text/css" href={{ url_for('static', filename='style.css') }}>
-  <title>Log In</title>
-    <title>Log In</title>
-  </head>
-  <body style="background-color:rgb(223, 230, 224);">
-	<!--Navbar-->
+		<link rel="stylesheet" type="text/css" href={{ url_for('static', filename='style.css') }}>
+		<title>Log In</title>
+	</head>
+	
+	<body style="background-color:rgb(223, 230, 224);">
+		<!--Navbar-->
 		<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #86E49E;">
-			<a class="navbar-brand" href="#"><img src="https://via.placeholder.com/50" width="30" height="30" alt="">(Yo)UB Sustainable</a>
+			<a class="navbar-brand" href="{{ url_for('home') }}"><img src="https://via.placeholder.com/50" width="30" height="30" alt="">(Yo)UB Sustainable</a>	
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
 			</button>
 			<div class="collapse navbar-collapse" id="navbarNav">
 				<ul class="navbar-nav mr-auto">
 					<li class="nav-item">
-						<a class="nav-link" href="index.html">Home<span class="sr-only">(current)</span></a>
+						<a class="nav-link" href="{{ url_for('home') }}">Home</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="challenge.html">Challenges</a>
+						<a class="nav-link" href="{{ url_for('chall') }}">Challenges</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="friends.html">Friends</a>
+						<a class="nav-link" href="{{ url_for('friend') }}">Friends</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="userdashboard.html">Dashboard</a>
+						<a class="nav-link" href="{{ url_for('dash') }}">Dashboard</a>
 					</li>
 				</ul>
-				<!--<a href="login.html" class="btn btn-sm btn-outline-success my-2 my-sm-0">Log In</a>-->
 			</div>
-		</nav>
-	<!--end of Navbar-->
+		</nav>	
+		<!--end of Navbar-->
 
     <div class="containter">
         <div class="row">
@@ -51,18 +50,26 @@
                 <h3>LOG IN</h3>
               </div>
               <div class="card-body">
-                <form>
-                  <label for="username">Username: </label><br>
-                  <input type="text" id="username" name="username"><br>
-                  <label for="password">Password:</label><br>
-                  <input type="text" id="password" name="password"><br>
+                <!--<form>
                   <label for="checkbox">Forgot password?</label>
                   <input type="checkbox" id="textnotifs" name="texts" value="texts"><br>
-                </form>
-                <a href="#" class="btn btn-primary">Log In</a>
+                </form>-->
+				
+				<form action="" method="post">
+					<label for="username">Username: </label><br>
+					<input type="text" placeholder="Username" name="username" value="{{  request.form.username }}"><br>
+					<label for="password">Password:</label><br>
+					<input type="password" placeholder="Password" name="password" value="{{ request.form.password }}"><br>
+					<input class="btn btn-primary" type="submit" value="Log In">
+				</form>
+				{% if error %}
+					<p class="error"><strong>Error:</strong> {{ error }}
+				{% endif %}
+				
+              <!--  <a href="#" class="btn btn-primary">Log In</a>-->
               </div>
 			  <div>
-				<a href="signup.html">Don't have an account? Register Here.</a>
+				<a href="{{ url_for('signup') }}">Don't have an account? Register Here.</a>
 			  </div>
               <!-- <div class="card-footer text-muted">
                 2 days ago
