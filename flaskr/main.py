@@ -1,7 +1,7 @@
 import os
 
 from flask import Flask
-from flask import render_template, request
+from flask import render_template, request, redirect, url_for, session
 from flask_mysqldb import MySQL
 import MySQLdb.cursors
 import mysql.connector
@@ -63,7 +63,7 @@ def create_app(test_config=None):
             #Check if acc exists
             cursor = mysql.connector.connect(user='root', database='accounts')
 
-            cursor.execute('SELECT * FROM accounts WHERE username = %s AND passowrd = %s', (username, password, ))
+            cursor.execute('SELECT * FROM accounts WHERE username = %s AND password = %s', (username, password, ))
             account = cursor.fetchone()
 
             if account:
@@ -73,7 +73,7 @@ def create_app(test_config=None):
                 session['id'] = account['id']
                 session['username'] = account['username']
 
-                return 'Logged in successfuly!'
+                return redirect(url_for('home')) 
             else:
                 #Error
                 msg = 'Incorrect username/password'
