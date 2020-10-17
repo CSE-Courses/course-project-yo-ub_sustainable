@@ -1,1 +1,1 @@
-web: gunicorn --chdir flaskr main:'create_app()'
+web: gunicorn wsgi:app

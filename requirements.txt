@@ -10,3 +10,5 @@ MarkupSafe==1.1.1
 six==1.15.0
 virtualenv==20.0.34
 Werkzeug==1.0.1
+flask-mysql-connector==1.0.3
+Flask-MySQLdb==0.2.0
