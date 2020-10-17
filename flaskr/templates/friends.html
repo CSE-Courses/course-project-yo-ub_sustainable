@@ -42,36 +42,45 @@
 		</nav>
 	<!--end of Navbar-->
 
-    <div class = "greenback" id = "search">
-      <input type="text" placeholder="Search...">
+    <div class="container">
+      <div class="container">
+        <div class="row">
+          <div class="col-10">
+            <div class = "row">
+              <div class = "col">
+                <h2>Your Friends</h2>
+                <h6>(Click a user's photo to view their profile)</h6>
+                <p>TOTAL FRIENDS: 4</p> <!--Change this shit-->
+              </div>
+              <div class = "col">
+                <h2>Users You May Know</h2>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <table>
+                  <tr><td><a href="./publicProfile-friend.html"><img src ="https://via.placeholder.com/50" class="pfp img-thumbnail"></a></td><td>[Firstname Lastname]</td></tr>
+                  <tr><td><a href="./publicProfile-friend.html"><img src ="https://via.placeholder.com/50" class="pfp img-thumbnail"></a></td><td>[Firstname Lastname]</td></tr>
+                  <tr><td><a href="./publicProfile-friend.html"><img src ="https://via.placeholder.com/50" class="pfp img-thumbnail"></a></td><td>[Firstname Lastname]</td></tr>
+                  <tr><td><a href="./publicProfile-friend.html"><img src ="https://via.placeholder.com/50" class="pfp img-thumbnail"></a></td><td>[Firstname Lastname]</td></tr>
+                </table>
+              </div>
+              <div class="col">
+                <table>
+                  <tr><td><a href="./publicProfile-notfriend.html"><img src ="https://via.placeholder.com/50" class="pfp img-thumbnail"></a></td><td>[Firstname Lastname]</td><td><a href="#" class="btn btn-secondary btnbtm">Add Friend</a></td></tr>
+                  <tr><td><a href="./publicProfile-notfriend.html"><img src ="https://via.placeholder.com/50" class="pfp img-thumbnail"></a></td><td>[Firstname Lastname]</td><td><a href="#" class="btn btn-secondary btnbtm">Add Friend</a></td></tr>
+                  <tr><td><a href="./publicProfile-notfriend.html"><img src ="https://via.placeholder.com/50" class="pfp img-thumbnail"></a></td><td>[Firstname Lastname]</td><td><a href="#" class="btn btn-secondary btnbtm">Add Friend</a></td></tr>
+                  <tr><td><a href="./publicProfile-notfriend.html"><img src ="https://via.placeholder.com/50" class="pfp img-thumbnail"></a></td><td>[Firstname Lastname]</td><td><a href="#" class="btn btn-secondary btnbtm">Add Friend</a></td></tr>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="col-1">
+            <input type="text" placeholder="Search Users...">
+          </div>
+        </div>
+      </div>
     </div>
-    <h1>Friends Page</h1>
-    <div class = "col greenback" id = "friendList">
-      <h5>Your Friends</h5>
-      <h5>Click a user's name to view their profile</h5>
-      <table>
-        <tr><td><a href="./userdashboard.html">Dummy User</a></td></tr>
-        <tr><td><a href="./userdashboard.html">Dummy User</a></td></tr>
-        <tr><td><a href="./userdashboard.html">Dummy User</a></td></tr>
-        <tr><td><a href="./userdashboard.html">Dummy User</a></td></tr>
-        <tr><td>etc</td></tr>
-      </table>
-    </div>
-
-    <br />
-    <div class = "col greenback" id = "notFriendList">
-      <h5>Users You May Know</h5>
-      <table>
-        <tr><td><a href="./userdashboard.html">Dummy User</a></td><td><button type="button">Add Friend</button></td></tr>
-        <tr><td><a href="./userdashboard.html">Dummy User</a></td><td><button type="button">Add Friend</button></td></tr>
-        <tr><td><a href="./userdashboard.html">Dummy User</a></td><td><button type="button">Add Friend</button></td></tr>
-        <tr><td><a href="./userdashboard.html">Dummy User</a></td><td><button type="button">Add Friend</button></td></tr>
-        <tr><td>etc</td></tr>
-      </table>
-    </div>
-    <br />
-    <br />
-    <a href = "#search">Search Bar</a>
   </body>
   <!-- Optional JavaScript -->
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
