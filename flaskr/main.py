@@ -7,6 +7,18 @@ from flask import redirect
 from flask import url_for
 from flask import session
 from flask import flash
+from flask_mysqldb import MySQL
+
+app = Flask(__name__)
+
+app.config['MYSQL_HOST'] = 'localhost'
+app.config['MYSQL_USER'] = 'root'
+app.config['MYSQL_USER'] = ''
+app.config['MYSQL_DB'] = 'login'
+
+mysql = MySQL(app)
+
+
 
 def create_app(test_config=None):
     # create and configure the app
@@ -82,9 +94,20 @@ def create_app(test_config=None):
     def publicProfileNotFriend():
         return render_template("publicProfileNotFriend.html")
 
-  #  @app.route("/login")
-  #  def login():
-  #      return render_template("login.html")
+    # @app.route("/login", methods = ['GET', 'POST'])
+    # def login():
+    #     if request.method == 'POST' and 'username' in request.form and 'password' in request.form:
+    #         username = request.form['username']
+    #         password = request.form['password']
+    #         cur = mysql.connection.cursor()
+    #         cur.execute('SELECT * FROM accounts WHERE username = %s AND password = %s', (username, password, ))
+    #         fetchdata = cur.fetchall()
+    #         session['logged_in'] = True
+    #         flash('You are logged in')
+    #         return redirect(url_for('home'))
+    #     else:
+    #         error = 'Invalid Credentials. Please try again.'
+    #     return render_template("login.html", error = error)
     
     @app.route('/login', methods=['GET', 'POST'])
     def login():
@@ -113,4 +136,6 @@ def create_app(test_config=None):
 
     return app
     
-    
+
+if __name__ == "__main__":
+    app.run(debug=True)
