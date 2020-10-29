@@ -1,5 +1,5 @@
 # Youb Sustainable
-Welcome to our course project! We created a web application targetded to living a more sustainable life.
+Welcome to our course project! We created a web application targeted to living a more sustainable life.
 
 ## Hosted Web App
 [Click here to visit our site](https://youbsustainable.herokuapp.com)
