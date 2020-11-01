@@ -4,9 +4,11 @@ Welcome to our course project! We created a web application targeted to living a
 ## Hosted Web App
 [Click here to visit our site](https://youbsustainable.herokuapp.com)
 
+## Requirements
+All requirements can be found in <code>requirements.txt</code>.
 
 ## Running Locally
-1. Make sure all dependancies are installed. 
+1. Make sure all requirements/dependancies are installed. 
 2. Clone repository on your local machine.
 3. Change directory to project folder. 
 4. Type the following commands:
