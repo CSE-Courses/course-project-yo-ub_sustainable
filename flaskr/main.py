@@ -9,14 +9,14 @@ from flask import session
 from flask import flash
 from flask_mysqldb import MySQL
 
-app = Flask(__name__)
+# app = Flask(__name__)
 
-app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = ''
-app.config['MYSQL_DB'] = 'login'
+# app.config['MYSQL_HOST'] = 'localhost'
+# app.config['MYSQL_USER'] = 'root'
+# app.config['MYSQL_PASSWORD'] = 'passwrd'
+# app.config['MYSQL_DB'] = 'login'
 
-mysql = MySQL(app)
+# mysql = MySQL(app)
 
 
 
@@ -25,8 +25,14 @@ def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
         SECRET_KEY='dev',
-        DATABASE=os.path.join(app.instance_path, 'flaskr.sqlite'),
+        MYSQL_HOST='localhost',
+        MYSQL_USER='root',
+        MYSQL_PASSWORD='passwrd',
+        MYSQL_DB='login'
+        #DATABASE=os.path.join(app.instance_path, 'flaskr.sqlite'),
     )
+
+    mysql = MySQL(app)
 
     if test_config is None:
         # load the instance config, if it exists, when not testing
@@ -94,35 +100,42 @@ def create_app(test_config=None):
     def publicProfileNotFriend():
         return render_template("publicProfileNotFriend.html")
 
-    # @app.route("/login", methods = ['GET', 'POST'])
-    # def login():
-    #     if request.method == 'POST' and 'username' in request.form and 'password' in request.form:
-    #         username = request.form['username']
-    #         password = request.form['password']
-    #         cur = mysql.connection.cursor()
-    #         cur.execute('SELECT * FROM accounts WHERE username = %s AND password = %s', (username, password, ))
-    #         fetchdata = cur.fetchall()
-    #         session['logged_in'] = True
-    #         flash('You are logged in')
-    #         return redirect(url_for('home'))
-    #     else:
-    #         error = 'Invalid Credentials. Please try again.'
-    #     return render_template("login.html", error = error)
-    
-    @app.route('/login', methods=['GET', 'POST'])
+    @app.route("/login", methods = ['GET', 'POST'])
     def login():
-        error = None
-        if request.method == 'POST':
-            if (request.form['username'] != 'test') or request.form['password'] != 'test': error = 'Invalid Credentials. Please try again.'
-            else:
+        msg = ''
+        if request.method == 'POST' and 'username' in request.form and 'password' in request.form:
+            username = request.form['username']
+            password = request.form['password']
+            cur = mysql.connection.cursor()
+            cur.execute('SELECT * FROM accounts WHERE username = %s AND password = %s', (username, password, ))
+            data = cur.fetchone()
+            # print(data)
+            if data:
                 session['logged_in'] = True
-                flash('You are logged in.')
+                session['id'] = data[0]
+                session['username'] = data[1]
+                flash('You are logged in')
                 return redirect(url_for('home'))
-        return render_template('login.html', error=error)
+            else:
+                msg = 'Invalid Credentials. Please try again.'
+        return render_template("login.html", msg = msg)
+    
+    # @app.route('/login', methods=['GET', 'POST'])
+    # def login():
+    #     error = None
+    #     if request.method == 'POST':
+    #         if (request.form['username'] != 'test') or request.form['password'] != 'test': error = 'Invalid Credentials. Please try again.'
+    #         else:
+    #             session['logged_in'] = True
+    #             flash('You are logged in.')
+    #             return redirect(url_for('home'))
+    #     return render_template('login.html', error=error)
      
     @app.route('/logout')
     def logout():
         session.pop('logged_in', None)
+        session.pop('id', None)
+        session.pop('username', None)
         flash('You are logged out.')
         return redirect(url_for('home'))
 
@@ -137,5 +150,5 @@ def create_app(test_config=None):
     return app
     
 
-if __name__ == "__main__":
-    app.run(debug=True)
+# if __name__ == "__main__":
+#     app.run(debug=True)
