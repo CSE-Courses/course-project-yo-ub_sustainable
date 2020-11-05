@@ -48,21 +48,32 @@
 						<h3> SIGN UP</h3> 
 					</div>
 					<div class="card-body">
-					<form>
-						<label for="fname">First name:</label><br>
-						<input type="text" id="fname" name="fname"><br>
-						<label for="lname">Last name:</label><br>
-						<input type="text" id="lname" name="lname"><br>
-						<label for="username">Username: </label><br>
-						<input type="text" id="username" name="username"><br>
-						<label for="password">Password:</label><br>
-						<input type="text" id="password" name="password"><br>
-						<label for="conf_password">Confirm password:</label><br>
-						<input type="text" id="conf_password" name="conf_password"><br>
-						<label for="checkbox">Would you like to receive reminder texts?</label>
-						<input type="checkbox" id="textnotifs" name="texts" value="texts"><br>
-					</form>
-					<a href="#" class="btn btn-primary">Sign Up</a>
+						<form action="{{ url_for('signup') }}", method='post'>
+							<label for="fname">First name:</label><br>
+							<input type="text" id="fname" name="fname" placeholder="First Name"><br>
+
+							<label for="lname">Last name:</label><br>
+							<input type="text" id="lname" name="lname" placeholder="Last Name"><br>
+
+							<label for="email">Email:</label><br>
+							<input type="text" id="email" name="email" placeholder="Email"><br>
+
+							<label for="username">Username: </label><br>
+							<input type="text" id="username" name="username" placeholder="Username"><br>
+
+							<label for="password">Password:</label><br>
+							<input type="text" id="password" name="password" placeholder="Password"><br>
+
+							<label for="conf_password">Confirm password:</label><br>
+							<input type="text" id="conf_password" name="conf_password" placeholder="Confirm password"><br>
+
+							<label for="checkbox">Would you like to receive reminder texts?</label>
+							<input type="checkbox" id="textnotifs" name="texts" value="texts"><br>
+
+							<div class="msg">{{ msg }}</div>
+							<input type="submit" value="Sign Up">
+						</form>
+					<!-- <a href="#" class="btn btn-primary">Sign Up</a> -->
 					</div>
 					<div>
 						<a href="{{ url_for('login') }}">Have an account? Login here.</a>

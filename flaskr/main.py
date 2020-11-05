@@ -1,4 +1,5 @@
 import os
+import re
 
 from flask import Flask
 from flask import render_template
@@ -139,9 +140,36 @@ def create_app(test_config=None):
         flash('You are logged out.')
         return redirect(url_for('home'))
 
-    @app.route("/signup")
+    @app.route("/signup", methods = ['GET', 'POST'])
     def signup():
-        return render_template("signup.html")
+        msg = ''
+        if request.method == 'POST' and 'username' in request.form and 'password' in request.form and 'email' in request.form:
+            username = request.form['username']
+            password = request.form['password']
+            email = request.form['email']
+            cur = mysql.connection.cursor()
+            cur.execute('SELECT * FROM accounts WHERE username = %s', (username,))
+            data = cur.fetchone()
+            if data:
+                # Account already exists
+                msg = 'Account already exists.'
+            elif not re.match(r'[^@]+@[^@]+\.[^@]+', email):
+                # Invalid email address
+                msg = 'Inavlid email address.'
+            elif not re.match(r'[A-Za-z0-9]+', username):
+                # Invalid username
+                msg = 'Username must only contain characters and numbers.'
+            elif not username or not password or not email:
+                # Form was not filled out
+                msg = 'Please enter your information.'
+            else:
+                cur.execute('INSERT INTO accounts VALUES (NULL, %s, %s, %s)', (username, password, email,))
+                mysql.connection.commit()
+                msg = 'You have successfully registered!'
+        elif request.method == 'POST':
+            #Form is empty
+            msg = 'Please enter your information.'
+        return render_template("signup.html", msg = msg)
 
     @app.route("/css")
     def css():
