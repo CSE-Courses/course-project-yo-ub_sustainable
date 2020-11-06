@@ -57,7 +57,7 @@
         <div class="col-1">
         </div>
         <div class="col-6">
-          <h1>First Last Name</h1>
+          <h1>{{ user_name | title}}</h1>
           <p> Eco Superstar</p>
           <div class="row">
             <div class="col">
@@ -163,14 +163,15 @@
       <div class = "col">
         <div class="container" id = "friendList">
           <div class="row greenback">
-            <h3>[Firstname Lastname]'s Friends</h3>
+            <h3>{{ user_name | title}}'s Friends</h3>
           </div>
-          <h5>TOTAL FRIENDS: 9</h5> <!--Change this shit-->
+          <h5>TOTAL FRIENDS: {{ friend_list | length }}</h5>
           <div class="row greenborder">
             <table>
               <tr><td><a href="{{ url_for('publicProfileNotFriend') }}"><img src ="https://via.placeholder.com/50" class="pfp img-thumbnail"></a></td><td>[Firstname Lastname]</td><td><a href="#" class="btn btn-secondary btnbtm">Add Friend</a></td></tr>
               <tr><td><a href="{{ url_for('publicProfileNotFriend') }}"><img src ="https://via.placeholder.com/50" class="pfp img-thumbnail"></a></td><td>[Firstname Lastname]</td><td><a href="#" class="btn btn-secondary btnbtm">Add Friend</a></td></tr>
               <tr><td><a href="{{ url_for('publicProfileFriend') }}"><img src ="https://via.placeholder.com/50" class="pfp img-thumbnail"></a></td><td>[Firstname Lastname]</td><td><a href="#" class="btn btn-secondary btnbtm">Remove Friend</a></td></tr>
+              <tr><td><a href="{{ url_for('publicProfileNotFriend') }}"><img src ="https://via.placeholder.com/50" class="pfp img-thumbnail"></a></td><td>[Firstname Lastname]</td><td><a href="#" class="btn btn-secondary btnbtm">Add Friend</a></td></tr>
               <tr><td><a href="{{ url_for('publicProfileNotFriend') }}"><img src ="https://via.placeholder.com/50" class="pfp img-thumbnail"></a></td><td>[Firstname Lastname]</td><td><a href="#" class="btn btn-secondary btnbtm">Add Friend</a></td></tr>
               <tr><td><a href = "#" class = "btn btn-secondary btnbtm">Load More</a></td></tr>
             </table>
