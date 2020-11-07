@@ -50,13 +50,73 @@
     </div>
   </nav>	
   <!--end of Navbar--> 
-	
-    <!-- FORM-->
-   
-    
-    
 
-      
+  <h3></h3>
+  
+  <!-- FORM-->
+  <form>
+    <!--Challenge Name-->
+    <div class="form-group">
+      <div class="col-10">
+        <label for="ChallengeName"><h5>Challenge Name</h5></label>
+        <input type="text" id="challengeName">
+      </div>
+    </div>
+
+    <!--Challenge Description-->
+    <div class="form-group">
+      <div class="col-10">
+        <label for="Description"><h5>Short Description</h5></label>
+        <input type="text" id="shortDescription">
+      </div>
+    </div>
+    
+    <!--Duration of Challenge-->
+    <div class="form-group">
+      <div class="col-10">
+        <label for="exampleFormControlSelect1"><h5> Duration of Challenge</h5></label>
+        <select class="form-control" id="SelectDuration">
+          <option>Daily</option>
+          <option>Weekly</option>
+          <option>Monthly</option>
+        </select>
+      </div>
+    </div>
+
+    <!--Category of Challenge-->
+    <div class="form-group">
+      <div class="col-10">
+        <label for="exampleFormControlSelect1"><h5>Select Category of Challenge</h5></label>
+        <select class="form-control" id="SelectCategory">
+          <option>Category 1</option>
+          <option>Category 2</option>
+          <option>Category 3</option>
+        </select>
+      </div>
+    </div>
+
+    <!--Challenge Impacts-->
+    <div class="form-group row">
+      <div class="col-10">
+        <label for="Description"><h5>The Impact</h5></label>
+        <input type="text" id="theImpact">
+      </div>
+    </div>
+
+    <!--Challenge Suggestions-->
+    <div class="row">
+      <div class="col-10">
+        <div class="form-group">
+          <label for="Description"><h5>Helpful Suggestions</h5></label>
+          <input type="text" id="Suggestions" aria-describedby="suggestionsHelp">
+          <small id="sugegstionsHelp" class="form-text text-muted">Please make them short bullet points(-) :)</small>
+        </div>
+      </div>
+    </div>
+    
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+  <br>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
