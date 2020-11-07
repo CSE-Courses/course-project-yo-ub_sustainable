@@ -44,3 +44,30 @@ Users = {
         }
     ]
 }
+
+def getUserName(name):
+    for uType in Users:
+        for user in Users[uType]:
+            if user['name'] == name:
+                return user['username']
+    return None
+
+def getProfilePic(name):
+    for uType in Users:
+        for user in Users[uType]:
+            if user['name'] == name:
+                return user['profilePic']
+    return None
+
+def addFriend(name):
+    newFriend = {'username': getUserName(name), 'name': name, 'profilePic': getProfilePic(name)}
+    Users['friends'].append(newFriend)
+    Users['notFriends'].remove(newFriend)
+
+def remFriend(name):
+    unFriend = {'username': getUserName(name), 'name': name, 'profilePic': getProfilePic(name)}
+    Users['notFriends'].append(unFriend)
+    Users['friends'].remove(unFriend)
+
+#Sprint 4
+#def searchUsers():

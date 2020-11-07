@@ -1,7 +1,7 @@
 import os
 
 from flask import Flask, render_template, request, redirect, url_for, session, flash
-from users import Users
+from users import Users, addFriend, remFriend
 
 def create_app(test_config=None):
     # create and configure the app
@@ -41,11 +41,13 @@ def create_app(test_config=None):
     def chall():
         return render_template("challenge.html")
 
-    @app.route("/friends")
+    @app.route("/friends", methods=["GET", "POST"])
     def friend():
         return render_template("friends.html",
             friendList=Users['friends'],
-            notFriendList=Users['notFriends'])
+            notFriendList=Users['notFriends'],
+            addFriend=addFriend, 
+            remFriend=remFriend)
 
     @app.route("/publicProfileFriend")
     def publicProfileFriend():
