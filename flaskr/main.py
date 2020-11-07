@@ -70,6 +70,11 @@ def create_app(test_config=None):
     def chall_pg6():
         return render_template("challenge_pages/challenge6.html")
 
+    #Addition for Custom Challenge
+    @app.route("/challengeCustom")
+    def chall_pg7():
+        return render_template("challenge_pages/custom_challenge.html")
+
     @app.route("/friends")
     def friend():
         return render_template("friends.html")
