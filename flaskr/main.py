@@ -41,7 +41,7 @@ def create_app(test_config=None):
     def chall():
         return render_template("challenge.html")
 
-    @app.route("/friends", methods=["GET", "POST"])
+    @app.route("/friends")
     def friend():
         return render_template("friends.html",
             friendList=Users['friends'],
@@ -87,5 +87,3 @@ def create_app(test_config=None):
         return render_template("static/css/style.css")
 
     return app
-    
-    
