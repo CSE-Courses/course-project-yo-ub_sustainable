@@ -21,13 +21,13 @@
                 {% elif friendList | length <= 5 %}
                   {% for friend in friendList%}
                   <table>
-                    <tr><td><a href="{{ url_for('publicProfileFriend') }}"><img src ="{{ friend['profilePic'] }}" class="pfp img-thumbnail"></a></td><td>{{friend['name']}}</td><td><button href="#" class="btn btn-secondary btnbtm">Remove Friend</button></td></tr>
+                    <tr><td><a href="{{ url_for('publicProfileFriend') }}"><img src ="{{ friend['profilePic'] }}" class="pfp img-thumbnail"></a></td><td>{{friend['name']}}</td><td><button href="#" onclick="{{remFriend(friend['name'])}}" class="btn btn-secondary btnbtm">Remove Friend</button></td></tr>
                   </table>
                   {% endfor %}
                 {% else %}
                   {% for friend in range(5) %}
                     <table>
-                      <tr><td><a href="{{ url_for('publicProfileFriend') }}"><img src ="{{ friendList[friend]['profilePic'] }}" class="pfp img-thumbnail"></a></td><td>{{friendList[friend]['name']}}</td><td><button href="#" class="btn btn-secondary btnbtm">Remove Friend</button></td></tr>
+                      <tr><td><a href="{{ url_for('publicProfileFriend') }}"><img src ="{{ friendList[friend]['profilePic'] }}" class="pfp img-thumbnail"></a></td><td>{{friendList[friend]['name']}}</td><td><button href="#" onclick="{{remFriend(friend['name'])}}" class="btn btn-secondary btnbtm">Remove Friend</button></td></tr>
                   {% endfor %}
                       <tr><td><button href = "#" class = "btn btn-secondary btnbtm">Load More</button></td></tr>
                     </table>
@@ -37,14 +37,14 @@
                 {% if notFriendList | length <= 5 %}
                   {% for notFriend in notFriendList%}
                   <table>
-                    <tr><td><a href="{{ url_for('publicProfileNotFriend') }}"><img src ="{{ notFriend['profilePic'] }}" class="pfp img-thumbnail"></a></td><td>{{notFriend['name']}}</td><td><button href="#" class="btn btn-secondary btnbtm">Add Friend</button></td></tr>
+                    <tr><td><a href="{{ url_for('publicProfileNotFriend') }}"><img src ="{{ notFriend['profilePic'] }}" class="pfp img-thumbnail"></a></td><td>{{notFriend['name']}}</td><td><button href="#" onclick="{{addFriend(notFriend['name'])}}" class="btn btn-secondary btnbtm">Add Friend</button></td></tr>
                   </table>
                   {% endfor %}
                 {% else %}
-                {% for notFriend in range(5) %}
-                  <table>
-                    <tr><td><a href="{{ url_for('publicProfileNotFriend') }}"><img src ="{{ notFriendList[notFriend]['profilePic'] }}" class="pfp img-thumbnail"></a></td><td>{{notFriendList[notFriend]['name']}}</td><td><button href="#" class="btn btn-secondary btnbtm">Add Friend</button></td></tr>
-                {% endfor %}
+                  {% for notFriend in range(5) %}
+                    <table>
+                      <tr><td><a href="{{ url_for('publicProfileNotFriend') }}"><img src ="{{ notFriendList[notFriend]['profilePic'] }}" class="pfp img-thumbnail"></a></td><td>{{notFriendList[notFriend]['name']}}</td><td><button href="#" onclick="{{addFriend(notFriend['name'])}}" class="btn btn-secondary btnbtm">Add Friend</button></td></tr>
+                  {% endfor %}
                     <tr><td><button href = "#" class = "btn btn-secondary btnbtm">Load More</button></td></tr>
                   </table>
                 {% endif %}
