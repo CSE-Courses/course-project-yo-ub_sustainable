@@ -10,29 +10,19 @@ from flask import session
 from flask import flash
 from flask_mysqldb import MySQL
 
-# app = Flask(__name__)
-
-# app.config['MYSQL_HOST'] = 'localhost'
-# app.config['MYSQL_USER'] = 'root'
-# app.config['MYSQL_PASSWORD'] = 'passwrd'
-# app.config['MYSQL_DB'] = 'login'
-
-# mysql = MySQL(app)
-
-
+import random
+from users import Users
 
 def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
         SECRET_KEY='dev',
-        # MYSQL_HOST='localhost',
         MYSQL_HOST='2.tcp.ngrok.io',
         MYSQL_PORT=15551,
         MYSQL_USER='root',
         MYSQL_PASSWORD='passwrd',
         MYSQL_DB='login'
-        #DATABASE=os.path.join(app.instance_path, 'flaskr.sqlite'),
     )
 
     mysql = MySQL(app)
@@ -92,8 +82,10 @@ def create_app(test_config=None):
         return render_template("challenge_pages/challenge6.html")
 
     @app.route("/friends")
-    def friend():
-        return render_template("friends.html")
+    def friend():  
+        return render_template("friends.html",
+            friendList=Users['friends'],
+            notFriendList=Users['notFriends'])
 
     @app.route("/publicProfileFriend")
     def publicProfileFriend():
@@ -102,6 +94,7 @@ def create_app(test_config=None):
     @app.route("/publicProfileNotFriend")
     def publicProfileNotFriend():
         return render_template("publicProfileNotFriend.html")
+
 
     @app.route("/login", methods = ['GET', 'POST'])
     def login():
@@ -175,10 +168,47 @@ def create_app(test_config=None):
 
     @app.route("/css")
     def css():
-        return render_template("static/css/style.css")
-
-    return app
+        return render_template("static/css/style.css") 
+    
+    @app.route("/random")
+    def rand_chall():
+        number = random.randint(1, 6)
+        site = "chall_pg" + str(number)
+        return redirect(url_for(site))
+        
+    #Friends Stuff 
     
 
-# if __name__ == "__main__":
-#     app.run(debug=True)
+    def getUserName(name):
+        for uType in Users:
+            for user in Users[uType]:
+                if user['name'] == name:
+                    return user['username']
+        return None
+
+    def getProfilePic(name):
+        for uType in Users:
+            for user in Users[uType]:
+                if user['name'] == name:
+                    return user['profilePic']
+        return None
+    
+    @app.route("/addFriend", methods = ['POST'])
+    def addFriend():
+        if request.method == 'POST':
+            name = request.form['notFriend']
+            newFriend = {'username': getUserName(name), 'name': name, 'profilePic':  getProfilePic(name)}
+            Users['friends'].append(newFriend)
+            Users['notFriends'].remove(newFriend)
+        return redirect(url_for('friend'))
+      
+    @app.route("/remFriend", methods = ['POST'])
+    def remFriend():
+        if request.method == 'POST':
+            name = request.form['friend']
+            unFriend = {'username': getUserName(name), 'name': name, 'profilePic': getProfilePic(name)}
+            Users['notFriends'].append(unFriend)
+            Users['friends'].remove(unFriend)
+        return redirect(url_for('friend'))
+    return app
+
