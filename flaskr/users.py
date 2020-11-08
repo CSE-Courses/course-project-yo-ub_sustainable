@@ -1,73 +1,21 @@
 Users = {
     'friends': [],
-    'notFriends': 
-    [
-        {
-            'username': 'jjohnson',
-            'name': 'John Johnson',
-            'profilePic': "https://via.placeholder.com/50"
-        }, 
-        {
-            'username': 'bjackson',
-            'name': 'Blake Jackson',
-            'profilePic': "https://via.placeholder.com/50"
-        }, 
-        {
-            'username': 'jkeller',
-            'name': 'Jack Keller',
-            'profilePic': "https://via.placeholder.com/50"
-        },
-        {
-            'username': 'dcarlson',
-            'name': 'Dave Carlson',
-            'profilePic': "https://via.placeholder.com/50"
-        }, 
-        {
-            'username': 'jdanz',
-            'name': 'Jason Danz',
-            'profilePic': "https://via.placeholder.com/50"
-        }, 
-        {
-            'username': 'bpacuk',
-            'name':'Ben Pacuk',
-            'profilePic': "https://via.placeholder.com/50"
-        }, 
-        {
-            'username': 'jdorr',
-            'name': 'Julia Dorr',
-            'profilePic': "https://via.placeholder.com/50"
-        }, 
-        {
-            'username': 'jmogul',
-            'name': 'Jordan Mogul',
-            'profilePic': "https://via.placeholder.com/50"
-        }
-    ]
+    'notFriends': ['John Johnson','Blake Jackson','Jack Keller','Dave Carlson','Jason Danz','Ben Pacuk','Julia Dorr','Jordan Mogul']
 }
 
-def getUserName(name):
-    for uType in Users:
-        for user in Users[uType]:
-            if user['name'] == name:
-                return user['username']
-    return None
-
-def getProfilePic(name):
-    for uType in Users:
-        for user in Users[uType]:
-            if user['name'] == name:
-                return user['profilePic']
-    return None
-
 def addFriend(name):
-    newFriend = {'username': getUserName(name), 'name': name, 'profilePic': getProfilePic(name)}
-    Users['friends'].append(newFriend)
-    Users['notFriends'].remove(newFriend)
+    Users['friends'].append(name)
+    if name in Users['notFriends']:
+        Users['notFriends'].remove(name)
 
 def remFriend(name):
-    unFriend = {'username': getUserName(name), 'name': name, 'profilePic': getProfilePic(name)}
-    Users['notFriends'].append(unFriend)
-    Users['friends'].remove(unFriend)
+    Users['notFriends'].append(name)
+    if name in Users['friends']:
+        Users['friends'].remove(name)
 
 #Sprint 4
 #def searchUsers():
+
+addFriend("John Johnson")
+print(Users['friends'])
+print(Users['notFriends'])
