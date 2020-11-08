@@ -176,9 +176,6 @@ def create_app(test_config=None):
         site = "chall_pg" + str(number)
         return redirect(url_for(site))
         
-    #Friends Stuff 
-    
-
     def getUserName(name):
         for uType in Users:
             for user in Users[uType]:
