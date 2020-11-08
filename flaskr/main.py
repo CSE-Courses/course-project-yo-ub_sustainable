@@ -7,13 +7,14 @@ from flask import redirect
 from flask import url_for
 from flask import session
 from flask import flash
+import random
 
 def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
         SECRET_KEY='dev',
-        DATABASE=os.path.join(app.instance_path, 'flaskr.sqlite'),
+      #  DATABASE=os.path.join(app.instance_path, 'flaskr.sqlite'),
     )
 
     if test_config is None:
@@ -81,10 +82,6 @@ def create_app(test_config=None):
     @app.route("/publicProfileNotFriend")
     def publicProfileNotFriend():
         return render_template("publicProfileNotFriend.html")
-
-  #  @app.route("/login")
-  #  def login():
-  #      return render_template("login.html")
     
     @app.route('/login', methods=['GET', 'POST'])
     def login():
@@ -109,8 +106,14 @@ def create_app(test_config=None):
 
     @app.route("/css")
     def css():
-        return render_template("static/css/style.css")
-
+        return render_template("static/css/style.css") 
+    
+    @app.route("/random")
+    def rand_chall():
+        number = random.randint(1, 6)
+        site = "chall_pg" + str(number)
+        return redirect(url_for(site))
+    
     return app
     
     
