@@ -1,5 +1,5 @@
 import os
-
+import random
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 from users import Users
 
@@ -8,7 +8,7 @@ def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
         SECRET_KEY='dev',
-        DATABASE=os.path.join(app.instance_path, 'flaskr.sqlite'),
+      #  DATABASE=os.path.join(app.instance_path, 'flaskr.sqlite'),
     )
 
     if test_config is None:
@@ -39,7 +39,31 @@ def create_app(test_config=None):
 
     @app.route("/challenge")
     def chall():
-        return render_template("challenge.html")
+        return render_template("challenge_list.html")
+    
+    @app.route("/challenge1")
+    def chall_pg1():
+        return render_template("challenge_pages/challenge1.html")
+    
+    @app.route("/challenge2")
+    def chall_pg2():
+        return render_template("challenge_pages/challenge2.html")
+
+    @app.route("/challenge3")
+    def chall_pg3():
+        return render_template("challenge_pages/challenge3.html")
+
+    @app.route("/challenge4")
+    def chall_pg4():
+        return render_template("challenge_pages/challenge4.html")
+
+    @app.route("/challenge5")
+    def chall_pg5():
+        return render_template("challenge_pages/challenge5.html")
+    
+    @app.route("/challenge6")
+    def chall_pg6():
+        return render_template("challenge_pages/challenge6.html")
 
     @app.route("/friends")
     def friend():  
@@ -71,15 +95,21 @@ def create_app(test_config=None):
         session.pop('logged_in', None)
         flash('You are logged out.')
         return redirect(url_for('home'))
-    
+
     @app.route("/signup")
     def signup():
         return render_template("signup.html")
 
     @app.route("/css")
     def css():
-        return render_template("static/css/style.css")
+        return render_template("static/css/style.css") 
     
+    @app.route("/random")
+    def rand_chall():
+        number = random.randint(1, 6)
+        site = "chall_pg" + str(number)
+        return redirect(url_for(site))
+        
     #Friends Stuff 
     
     def getUserName(name):
@@ -104,8 +134,8 @@ def create_app(test_config=None):
             Users['friends'].append(newFriend)
             Users['notFriends'].remove(newFriend)
         return redirect(url_for('friend'))
+      
     @app.route("/remFriend", methods = ['POST'])
-    
     def remFriend():
         if request.method == 'POST':
             name = request.form['friend']
