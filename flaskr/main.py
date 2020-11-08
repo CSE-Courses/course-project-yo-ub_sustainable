@@ -26,7 +26,9 @@ def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
         SECRET_KEY='dev',
-        MYSQL_HOST='localhost',
+        # MYSQL_HOST='localhost',
+        MYSQL_HOST='2.tcp.ngrok.io',
+        MYSQL_PORT=15551,
         MYSQL_USER='root',
         MYSQL_PASSWORD='passwrd',
         MYSQL_DB='login'
