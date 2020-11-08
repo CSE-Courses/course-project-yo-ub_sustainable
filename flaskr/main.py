@@ -8,34 +8,31 @@ from flask import redirect
 from flask import url_for
 from flask import session
 from flask import flash
-from flask_mysqldb import MySQL
+# from flask_mysqldb import MySQL
+# from flask_mysql import MySQL
+# import pymysql
+import MySQLdb
+import pymysql.cursors
 
-# app = Flask(__name__)
+import random
+from users import Users
 
-# app.config['MYSQL_HOST'] = 'localhost'
-# app.config['MYSQL_USER'] = 'root'
-# app.config['MYSQL_PASSWORD'] = 'passwrd'
-# app.config['MYSQL_DB'] = 'login'
-
-# mysql = MySQL(app)
-
-
+# mysql = MySQL()
 
 def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
         SECRET_KEY='dev',
-        # MYSQL_HOST='localhost',
-        MYSQL_HOST='2.tcp.ngrok.io',
-        MYSQL_PORT=15551,
-        MYSQL_USER='root',
-        MYSQL_PASSWORD='passwrd',
-        MYSQL_DB='login'
-        #DATABASE=os.path.join(app.instance_path, 'flaskr.sqlite'),
+        # MYSQL_DATABASE_HOST='us-cdbr-east-02.cleardb.com',
+        # MYSQL_PORT=15551,
+        # MYSQL_DATABSE_USER='b33b6415873ff5',
+        # MYSQL_DATABASE_PASSWORD='d1a1b9a1',
+        # MYSQL_DATABASE_DB='heroku_1e2700f5b989c0b'
     )
 
-    mysql = MySQL(app)
+    # mysql.init_app(app)
+   
 
     if test_config is None:
         # load the instance config, if it exists, when not testing
@@ -92,8 +89,10 @@ def create_app(test_config=None):
         return render_template("challenge_pages/challenge6.html")
 
     @app.route("/friends")
-    def friend():
-        return render_template("friends.html")
+    def friend():  
+        return render_template("friends.html",
+            friendList=Users['friends'],
+            notFriendList=Users['notFriends'])
 
     @app.route("/publicProfileFriend")
     def publicProfileFriend():
@@ -103,36 +102,35 @@ def create_app(test_config=None):
     def publicProfileNotFriend():
         return render_template("publicProfileNotFriend.html")
 
+
     @app.route("/login", methods = ['GET', 'POST'])
     def login():
         msg = ''
         if request.method == 'POST' and 'username' in request.form and 'password' in request.form:
             username = request.form['username']
             password = request.form['password']
-            cur = mysql.connection.cursor()
-            cur.execute('SELECT * FROM accounts WHERE username = %s AND password = %s', (username, password, ))
-            data = cur.fetchone()
-            # print(data)
+            # cur = mysql.connection.cursor()
+            connection = pymysql.connect(host='us-cdbr-east-02.cleardb.com',
+                             user='b33b6415873ff5',
+                             password='d1a1b9a1',
+                             db='heroku_1e2700f5b989c0b',
+                             charset='utf8mb4',
+                             cursorclass=pymysql.cursors.DictCursor)
+            with connection.cursor() as cursor:
+                cursor.execute('SELECT * FROM accounts WHERE username = %s AND password = %s', (username, password, ))
+            data = cursor.fetchone()
+            print(data)
             if data:
                 session['logged_in'] = True
-                session['id'] = data[0]
-                session['username'] = data[1]
+                session['id'] = data['id']
+                session['username'] = data['username']
                 flash('You are logged in')
                 return redirect(url_for('home'))
             else:
                 msg = 'Invalid Credentials. Please try again.'
+            connection.close()
         return render_template("login.html", msg = msg)
     
-    # @app.route('/login', methods=['GET', 'POST'])
-    # def login():
-    #     error = None
-    #     if request.method == 'POST':
-    #         if (request.form['username'] != 'test') or request.form['password'] != 'test': error = 'Invalid Credentials. Please try again.'
-    #         else:
-    #             session['logged_in'] = True
-    #             flash('You are logged in.')
-    #             return redirect(url_for('home'))
-    #     return render_template('login.html', error=error)
      
     @app.route('/logout')
     def logout():
@@ -149,9 +147,15 @@ def create_app(test_config=None):
             username = request.form['username']
             password = request.form['password']
             email = request.form['email']
-            cur = mysql.connection.cursor()
-            cur.execute('SELECT * FROM accounts WHERE username = %s', (username,))
-            data = cur.fetchone()
+            connection2 = pymysql.connect(host='us-cdbr-east-02.cleardb.com',
+                    user='b33b6415873ff5',
+                    password='d1a1b9a1',
+                    db='heroku_1e2700f5b989c0b',
+                    charset='utf8mb4',
+                    cursorclass=pymysql.cursors.DictCursor)
+            with connection2.cursor() as cursor2:
+                cursor2.execute('SELECT * FROM accounts WHERE username = %s', (username,))
+            data = cursor2.fetchone()
             if data:
                 # Account already exists
                 msg = 'Account already exists.'
@@ -165,20 +169,56 @@ def create_app(test_config=None):
                 # Form was not filled out
                 msg = 'Please enter your information.'
             else:
-                cur.execute('INSERT INTO accounts VALUES (NULL, %s, %s, %s)', (username, password, email,))
-                mysql.connection.commit()
+                with connection2.cursor() as cursor3:
+                    cursor3.execute('INSERT INTO accounts VALUES (NULL, %s, %s, %s)', (username, password, email,))
+                connection2.commit()
                 msg = 'You have successfully registered!'
+            connection2.close()
         elif request.method == 'POST':
             #Form is empty
             msg = 'Please enter your information.'
+        
         return render_template("signup.html", msg = msg)
 
     @app.route("/css")
     def css():
-        return render_template("static/css/style.css")
-
-    return app
+        return render_template("static/css/style.css") 
     
+    @app.route("/random")
+    def rand_chall():
+        number = random.randint(1, 6)
+        site = "chall_pg" + str(number)
+        return redirect(url_for(site))
+        
+    def getUserName(name):
+        for uType in Users:
+            for user in Users[uType]:
+                if user['name'] == name:
+                    return user['username']
+        return None
 
-# if __name__ == "__main__":
-#     app.run(debug=True)
+    def getProfilePic(name):
+        for uType in Users:
+            for user in Users[uType]:
+                if user['name'] == name:
+                    return user['profilePic']
+        return None
+    
+    @app.route("/addFriend", methods = ['POST'])
+    def addFriend():
+        if request.method == 'POST':
+            name = request.form['notFriend']
+            newFriend = {'username': getUserName(name), 'name': name, 'profilePic':  getProfilePic(name)}
+            Users['friends'].append(newFriend)
+            Users['notFriends'].remove(newFriend)
+        return redirect(url_for('friend'))
+      
+    @app.route("/remFriend", methods = ['POST'])
+    def remFriend():
+        if request.method == 'POST':
+            name = request.form['friend']
+            unFriend = {'username': getUserName(name), 'name': name, 'profilePic': getProfilePic(name)}
+            Users['notFriends'].append(unFriend)
+            Users['friends'].remove(unFriend)
+        return redirect(url_for('friend'))
+    return app
