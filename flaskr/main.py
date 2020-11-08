@@ -1,7 +1,7 @@
 import os
 
 from flask import Flask, render_template, request, redirect, url_for, session, flash
-from users import Users, addFriend, remFriend
+from users import Users
 
 def create_app(test_config=None):
     # create and configure the app
@@ -42,12 +42,10 @@ def create_app(test_config=None):
         return render_template("challenge.html")
 
     @app.route("/friends")
-    def friend():
+    def friend():  
         return render_template("friends.html",
             friendList=Users['friends'],
-            notFriendList=Users['notFriends'],
-            addFriend=addFriend, 
-            remFriend=remFriend)
+            notFriendList=Users['notFriends'])
 
     @app.route("/publicProfileFriend")
     def publicProfileFriend():
@@ -56,10 +54,6 @@ def create_app(test_config=None):
     @app.route("/publicProfileNotFriend")
     def publicProfileNotFriend():
         return render_template("publicProfileNotFriend.html")
-
-  #  @app.route("/login")
-  #  def login():
-  #      return render_template("login.html")
     
     @app.route('/login', methods=['GET', 'POST'])
     def login():
@@ -85,5 +79,38 @@ def create_app(test_config=None):
     @app.route("/css")
     def css():
         return render_template("static/css/style.css")
+    
+    #Friends Stuff 
+    
+    def getUserName(name):
+        for uType in Users:
+            for user in Users[uType]:
+                if user['name'] == name:
+                    return user['username']
+        return None
 
+    def getProfilePic(name):
+        for uType in Users:
+            for user in Users[uType]:
+                if user['name'] == name:
+                    return user['profilePic']
+        return None
+    
+    @app.route("/addFriend", methods = ['POST'])
+    def addFriend():
+        if request.method == 'POST':
+            name = request.form['notFriend']
+            newFriend = {'username': getUserName(name), 'name': name, 'profilePic':  getProfilePic(name)}
+            Users['friends'].append(newFriend)
+            Users['notFriends'].remove(newFriend)
+        return redirect(url_for('friend'))
+    @app.route("/remFriend", methods = ['POST'])
+    
+    def remFriend():
+        if request.method == 'POST':
+            name = request.form['friend']
+            unFriend = {'username': getUserName(name), 'name': name, 'profilePic': getProfilePic(name)}
+            Users['notFriends'].append(unFriend)
+            Users['friends'].remove(unFriend)
+        return redirect(url_for('friend'))
     return app
