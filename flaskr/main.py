@@ -1,13 +1,7 @@
 import os
-
-from flask import Flask
-from flask import render_template
-from flask import request
-from flask import redirect
-from flask import url_for
-from flask import session
-from flask import flash
 import random
+from flask import Flask, render_template, request, redirect, url_for, session, flash
+from users import Users
 
 def create_app(test_config=None):
     # create and configure the app
@@ -72,8 +66,10 @@ def create_app(test_config=None):
         return render_template("challenge_pages/challenge6.html")
 
     @app.route("/friends")
-    def friend():
-        return render_template("friends.html")
+    def friend():  
+        return render_template("friends.html",
+            friendList=Users['friends'],
+            notFriendList=Users['notFriends'])
 
     @app.route("/publicProfileFriend")
     def publicProfileFriend():
@@ -113,7 +109,38 @@ def create_app(test_config=None):
         number = random.randint(1, 6)
         site = "chall_pg" + str(number)
         return redirect(url_for(site))
+        
+    #Friends Stuff 
     
+    def getUserName(name):
+        for uType in Users:
+            for user in Users[uType]:
+                if user['name'] == name:
+                    return user['username']
+        return None
+
+    def getProfilePic(name):
+        for uType in Users:
+            for user in Users[uType]:
+                if user['name'] == name:
+                    return user['profilePic']
+        return None
+    
+    @app.route("/addFriend", methods = ['POST'])
+    def addFriend():
+        if request.method == 'POST':
+            name = request.form['notFriend']
+            newFriend = {'username': getUserName(name), 'name': name, 'profilePic':  getProfilePic(name)}
+            Users['friends'].append(newFriend)
+            Users['notFriends'].remove(newFriend)
+        return redirect(url_for('friend'))
+      
+    @app.route("/remFriend", methods = ['POST'])
+    def remFriend():
+        if request.method == 'POST':
+            name = request.form['friend']
+            unFriend = {'username': getUserName(name), 'name': name, 'profilePic': getProfilePic(name)}
+            Users['notFriends'].append(unFriend)
+            Users['friends'].remove(unFriend)
+        return redirect(url_for('friend'))
     return app
-    
-    
