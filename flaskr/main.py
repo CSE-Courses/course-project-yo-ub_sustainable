@@ -147,6 +147,8 @@ def create_app(test_config=None):
             username = request.form['username']
             password = request.form['password']
             email = request.form['email']
+            fname = request.form['fname']
+            lname = request.form['lname']
             connection2 = pymysql.connect(host='us-cdbr-east-02.cleardb.com',
                     user='b33b6415873ff5',
                     password='d1a1b9a1',
@@ -170,7 +172,7 @@ def create_app(test_config=None):
                 msg = 'Please enter your information.'
             else:
                 with connection2.cursor() as cursor3:
-                    cursor3.execute('INSERT INTO accounts VALUES (NULL, %s, %s, %s)', (username, password, email,))
+                    cursor3.execute('INSERT INTO accounts VALUES (NULL, %s, %s, %s, %s, %s)', (fname, lname, username, password, email,))
                 connection2.commit()
                 msg = 'You have successfully registered!'
             connection2.close()
