@@ -16,7 +16,7 @@
 	<body style="background-color:rgb(223, 230, 224);">
 		<!--Navbar-->
 		<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #86E49E;">
-			<a class="navbar-brand" href="{{ url_for('home') }}"><img src="https://via.placeholder.com/50" width="30" height="30" alt="">(Yo)UB Sustainable</a>	
+			<a class="navbar-brand" href="{{ url_for('home') }}"><img src = "static/logo.png" class="img-fluid" width="30" height="30" alt="">(Yo)UB Sustainable</a>	
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
 			</button>
@@ -50,12 +50,8 @@
                 <h3>LOG IN</h3>
               </div>
               <div class="card-body">
-                <!--<form>
-                  <label for="checkbox">Forgot password?</label>
-                  <input type="checkbox" id="textnotifs" name="texts" value="texts"><br>
-                </form>-->
-				
-				<form action="" method="post">
+
+				<form action="{{ url_for('login') }}" method="post">
 					<label for="username">Username: </label><br>
 					<input type="text" placeholder="Username" name="username" value="{{  request.form.username }}"><br>
 					<label for="password">Password:</label><br>
