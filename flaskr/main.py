@@ -187,6 +187,33 @@ def create_app(test_config=None):
         
         return render_template("signup.html", msg = msg)
 
+    #function for custom challenge form
+    @app.route("/addingcustom", methods = ['GET', 'POST'])
+    def addingcustom():
+        msg = ''
+        if request.method == 'POST' and 'challengeName' in request.form and 'shortDescription' in request.form and 'SelectDuration' in request.form and 'SelectCategory' in request.form and 'theImpact' in request.form and 'sugegstionsHelp' in request.form:
+            challengeName = request.form['challengeName']
+            shortDescription = request.form['shortDescription']
+            SelectDuration = request.form['SelectDuration']
+            SelectCategory = request.form['SelectCategory']
+            theImpact = request.form['theImpact']
+            sugegstionsHelp = request.form['sugegstionsHelp']
+            connection2 = pymysql.connect(host='us-cdbr-east-02.cleardb.com',
+                    user='b33b6415873ff5',
+                    password='d1a1b9a1',
+                    db='heroku_1e2700f5b989c0b',
+                    charset='utf8mb4',
+                    cursorclass=pymysql.cursors.DictCursor)
+            with connection2.cursor() as cursor3:
+                cursor3.execute('INSERT INTO challenges VALUES (NULL, %s, %s, %s, %s, %s, %s)', (challengeName, shortDescription,  SelectDuration,  SelectCategory, theImpact,sugegstionsHelp,))
+            connection2.commit()
+            connection2.close()
+        elif request.method == 'POST':
+            #Form is empty
+            msg = 'Please enter informaton for Custom Challenge.'
+        
+        return render_template("challenge_pages/custom_challenge.html", msg = msg)
+
     @app.route("/css")
     def css():
         return render_template("static/css/style.css") 
