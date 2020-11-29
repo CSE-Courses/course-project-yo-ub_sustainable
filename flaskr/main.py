@@ -1,16 +1,7 @@
 import os
 import re
 
-from flask import Flask
-from flask import render_template
-from flask import request
-from flask import redirect
-from flask import url_for
-from flask import session
-from flask import flash
-# from flask_mysqldb import MySQL
-# from flask_mysql import MySQL
-# import pymysql
+from flask import Flask, render_template, request, redirect, url_for, session, flash
 import MySQLdb
 import pymysql.cursors
 
@@ -97,7 +88,9 @@ def create_app(test_config=None):
     def friend():  
         return render_template("friends.html",
             friendList=Users['friends'],
-            notFriendList=Users['notFriends'])
+            notFriendList=Users['notFriends'],
+            loadMoreFriend = False,
+            loadMoreNotFriend = False)
 
     @app.route("/publicProfileFriend")
     def publicProfileFriend():
@@ -227,5 +220,17 @@ def create_app(test_config=None):
             unFriend = {'username': getUserName(name), 'name': name, 'profilePic': getProfilePic(name)}
             Users['notFriends'].append(unFriend)
             Users['friends'].remove(unFriend)
+        return redirect(url_for('friend'))
+
+    @app.route("/loadMoreFriend", methods = ['POST'])
+    def loadMoreFriend():
+        if request.method == 'POST':
+            loadMoreFriend = True
+        return redirect(url_for('friend'))
+
+    @app.route("/loadMoreNotFriend", methods = ['POST'])
+    def loadMoreNotFriend():
+        if request.method == 'POST':
+            loadMoreNotFriend = True
         return redirect(url_for('friend'))
     return app
