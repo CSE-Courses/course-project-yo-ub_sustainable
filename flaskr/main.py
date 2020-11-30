@@ -96,14 +96,13 @@ def create_app(test_config=None):
     def publicProfileFriend():
         return render_template("publicProfileFriend.html",
             friendList = PubFriend,
-            loadMoreFriend = False)
+            loadMore = False)
 
     @app.route("/publicProfileNotFriend")
     def publicProfileNotFriend():
         return render_template("publicProfileNotFriend.html",
             friendList = PubNotFriend,
-            loadMoreNotFriend = False)
-
+            loadMore = False)
 
     @app.route("/login", methods = ['GET', 'POST'])
     def login():
@@ -133,7 +132,6 @@ def create_app(test_config=None):
             connection.close()
         return render_template("login.html", msg = msg)
     
-     
     @app.route('/logout')
     def logout():
         session.pop('logged_in', None)
@@ -237,4 +235,16 @@ def create_app(test_config=None):
         if request.method == 'POST':
             loadMoreNotFriend = True
         return redirect(url_for('friend'))
+
+    @app.route("/loadMorePubFriend", methods = ['POST'])
+    def loadMorePubFriend():
+        if request.method == 'POST':
+            loadMore = True
+        return redirect(url_for('publicProfileFriend'))
+
+    @app.route("/loadMorePubNotFriend", methods = ['POST'])
+    def loadMorePubNotFriend():
+        if request.method == 'POST':
+            loadMore = True
+        return redirect(url_for('publicProfileNotFriend'))
     return app
