@@ -58,6 +58,12 @@ def create_app(test_config=None):
 
     @app.route("/dash")
     def dash():
+        connection = pymysql.connect(host='us-cdbr-east-02.cleardb.com',
+                             user='b33b6415873ff5',
+                             password='d1a1b9a1',
+                             db='heroku_1e2700f5b989c0b',
+                             charset='utf8mb4',
+                             cursorclass=pymysql.cursors.DictCursor)
         return render_template("userdashboard.html")
 
     @app.route("/challenge")
@@ -124,7 +130,7 @@ def create_app(test_config=None):
             with connection.cursor() as cursor:
                 cursor.execute('SELECT * FROM accounts WHERE username = %s AND password = %s', (username, password, ))
             data = cursor.fetchone()
-            print(data)
+            # print(data)
             if data:
                 session['logged_in'] = True
                 session['id'] = data['id']

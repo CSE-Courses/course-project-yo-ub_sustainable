@@ -1,3 +1,4 @@
+<!-- straws -->
 <!doctype html>
 <html lang="en">
   <head>
@@ -57,7 +58,7 @@
         <div class="col-1">
         </div>
         <div class="col-6">
-          <h1>Reuseable Straws</h1>
+          <h1>Reusable Straws</h1>
         </div> 
       </div>
       <div class="row greenback">
@@ -127,7 +128,21 @@
       </div>
         <br>
       <div class = "row">
+        {% if session['logged_in'] == True %}
+        <a href="{{ url_for('dash') }}" class="btn btn-secondary col-12" id="select">SELECT</a>
+        <?php
+        $conn = mysqli_connect("us-cdbr-east-02.cleardb.com", "b33b6415873ff5", "d1a1b9a1", "heroku_1e2700f5b989c0b");
+        if (!$conn) {
+          die('Could not connect: ' . mysql_error());
+        }
+        echo 'Connected successfully';
+        $sql = "INSERT INTO `straws` (`user`,`saved`, `in progress`, `completed`) VALUES ('test', 'N', 'Y', 'N')";
+        $result = $conn->query($sql);
+        mysql_close($link);
+        ?>
+        {% else %}
         <a href="#" class="btn btn-secondary col-12">SELECT</a>
+        {% endif %}
       </div>
     </div>
       <br>
