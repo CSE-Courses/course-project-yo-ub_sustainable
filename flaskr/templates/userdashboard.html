@@ -52,13 +52,14 @@
 		</nav>
 		<!--end of Navbar-->
 
+{% if session['logged_in'] == True %}
   <div class="container">
     <div class="container">
       <div class="row">
         <div class="col-1">
         </div>
         <div class="col-6">
-          <h1>{{session.username}}!</h1>
+          <h1>{{session.fname}} {{session.lname}}</h1>
           <p> Eco Superstar</p>
           <div class="row">
             <div class="col">
@@ -202,7 +203,9 @@
       <a href="#" class="btn btn-secondary col-12">Sign Out</a>
     </div>
   </div>
-
+ {% else %}
+  <h2>Please log in to view your dashboard!</h2>
+ {% endif %}
   <!-- Optional JavaScript -->
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
