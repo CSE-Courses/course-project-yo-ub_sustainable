@@ -165,17 +165,97 @@
           <div class="row greenback">
             <h3>[Firstname Lastname]'s Friends</h3>
           </div>
-          <h5>TOTAL FRIENDS: 9</h5>
+          <p>TOTAL FRIENDS: {{ friendList| length }}</p>
           <div class="row greenborder">
-            <table>
-              <tr><td><a href="{{ url_for('publicProfileNotFriend') }}"><img src ="https://via.placeholder.com/50" class="pfp img-thumbnail"></a></td><td>[Firstname Lastname]</td><td><a href="#" class="btn btn-secondary btnbtm">Add Friend</a></td></tr>
-              <tr><td><a href="{{ url_for('publicProfileNotFriend') }}"><img src ="https://via.placeholder.com/50" class="pfp img-thumbnail"></a></td><td>[Firstname Lastname]</td><td><a href="#" class="btn btn-secondary btnbtm">Add Friend</a></td></tr>
-              <tr><td><a href="{{ url_for('publicProfileFriend') }}"><img src ="https://via.placeholder.com/50" class="pfp img-thumbnail"></a></td><td>[Firstname Lastname]</td><td><a href="#" class="btn btn-secondary btnbtm">Remove Friend</a></td></tr>
-              <tr><td><a href="{{ url_for('publicProfileNotFriend') }}"><img src ="https://via.placeholder.com/50" class="pfp img-thumbnail"></a></td><td>[Firstname Lastname]</td><td><a href="#" class="btn btn-secondary btnbtm">Add Friend</a></td></tr>
-              <tr><td><a href="{{ url_for('publicProfileNotFriend') }}"><img src ="https://via.placeholder.com/50" class="pfp img-thumbnail"></a></td><td>[Firstname Lastname]</td><td><a href="#" class="btn btn-secondary btnbtm">Add Friend</a></td></tr>
-
-              <tr><td><a href = "#" class = "btn btn-secondary btnbtm">Load More</a></td></tr>
-            </table>
+            {% if friendList | length <= 5 %}
+              <table>  
+                {% for friend in friendList %}
+                  {% if friend['type'] == 'friend' %}
+                    <tr>
+                      <td>
+                        <a href="{{ url_for('publicProfileFriend') }}"><img src ="{{ friend['profilePic'] }}" class="pfp img-thumbnail"></a>
+                      </td>
+                      <td>{{friend['name']}}</td>
+                      <td>
+                        <a href="#" class="btn btn-secondary btnbtm">Remove Friend</a>
+                        <!-- <form action = "/remFriend" method = "POST"> -->
+                        <!--  <button name = "friend" type = "submit" value = "{{ friend['name'] }}" class="btn btn-secondary btnbtm">Unfriend</button> -->
+                        <!-- </form> -->
+                      </td>
+                    </tr>
+                  {% else %}
+                    <tr>
+                      <td>
+                        <a href="{{ url_for('publicProfileNotFriend') }}"><img src ="{{ friend['profilePic'] }}" class="pfp img-thumbnail"></a>
+                      </td>
+                      <td>{{friend['name']}}</td>
+                      <td>
+                        <a href="#" class="btn btn-secondary btnbtm">Add Friend</a>
+                      </td>
+                    </tr>
+                  {% endif %}
+                {% endfor %}
+              </table>
+            {% elif loadMoreNotFriend == False %}
+              <table>
+              {% for friend in range(5) %}
+                {% if friendList[friend]['type'] == 'friend' %}
+                  <tr>
+                    <td>
+                      <a href="{{ url_for('publicProfileFriend') }}"><img src ="{{ friendList[friend]['profilePic'] }}" class="pfp img-thumbnail"></a>
+                    </td>
+                    <td>{{friendList[friend]['name']}}</td>
+                    <td>
+                      <a href="#" class="btn btn-secondary btnbtm">Remove Friend</a>
+                    </td>
+                  </tr>
+                {% else %}
+                  <tr>
+                    <td>
+                      <a href="{{ url_for('publicProfileNotFriend') }}"><img src ="{{ friendList[friend]['profilePic'] }}" class="pfp img-thumbnail"></a>
+                    </td>
+                    <td>{{friendList[friend]['name']}}</td>
+                    <td>
+                      <a href="#" class="btn btn-secondary btnbtm">Add Friend</a>
+                    </td>
+                  </tr>
+                {% endif %}
+              {% endfor %}
+                <tr>
+                  <td>
+                    <form action = "/loadMoreFriend" method = "POST">
+                      <button name = "loadMoreFriend" type = "submit"  class="btn btn-secondary btnbtm">Load More</button>
+                    </form>
+                  </td>
+                </tr>
+              </table>
+            {% else %}
+              <table>
+              {% for friend in friendList %}
+                {% if friend['type'] == 'friend' %}
+                  <tr>
+                    <td>
+                      <a href="{{ url_for('publicProfileFriend') }}"><img src ="{{ friend['profilePic'] }}" class="pfp img-thumbnail"></a>
+                    </td>
+                    <td>{{friend['name']}}</td>
+                    <td>
+                      <a href="#" class="btn btn-secondary btnbtm">Remove Friend</a>
+                    </td>
+                  </tr>
+                {% else %}
+                  <tr>
+                    <td>
+                      <a href="{{ url_for('publicProfileNotFriend') }}"><img src ="{{ friend['profilePic'] }}" class="pfp img-thumbnail"></a>
+                    </td>
+                    <td>{{friend['name']}}</td>
+                    <td>
+                      <a href="#" class="btn btn-secondary btnbtm">Add Friend</a>
+                    </td>
+                  </tr>
+                {% endif %}
+              {% endfor %}
+              </table>
+            {% endif %}
           </div>
         </div>
       </div>
