@@ -45,5 +45,104 @@ Users = {
     ]
 }
 
-#Sprint 4
-#def searchUsers():
+PubFriend = [
+        {
+            'type': 'friend',
+            'name': 'John Johnson',
+            'profilePic': "https://via.placeholder.com/50"
+        },
+        {
+            'type': 'notFriend',
+            'name': 'John Johnson',
+            'profilePic': "https://via.placeholder.com/50"
+        },
+        {
+            'type': 'friend',
+            'name': 'John Johnson',
+            'profilePic': "https://via.placeholder.com/50"
+        },
+        {
+            'type': 'friend',
+            'name': 'John Johnson',
+            'profilePic': "https://via.placeholder.com/50"
+        },
+        {
+            'type': 'friend',
+            'name': 'Julia Dorr',
+            'profilePic': "https://via.placeholder.com/50"
+        },
+        {
+            'type': 'notFriend',
+            'name': 'Julia Dorr',
+            'profilePic': "https://via.placeholder.com/50"
+        },
+        {
+            'type': 'notFriend',
+            'name': 'Julia Dorr',
+            'profilePic': "https://via.placeholder.com/50"
+        },
+        {
+            'type': 'notFriend',
+            'name': 'Julia Dorr',
+            'profilePic': "https://via.placeholder.com/50"
+        },
+        {
+            'type': 'notFriend',
+            'name': 'Julia Dorr',
+            'profilePic': "https://via.placeholder.com/50"
+        }
+    ]
+
+
+PubNotFriend = [
+        {
+            'type': 'notFriend',
+            'name': 'Julia Dorr',
+            'profilePic': "https://via.placeholder.com/50"
+        },
+        {
+            'type': 'friend',
+            'name': 'John Johnson',
+            'profilePic': "https://via.placeholder.com/50"
+        },
+        {
+            'type': 'notFriend',
+            'name': 'John Johnson',
+            'profilePic': "https://via.placeholder.com/50"
+        },
+        {
+            'type': 'friend',
+            'name': 'John Johnson',
+            'profilePic': "https://via.placeholder.com/50"
+        },
+        {
+            'type': 'friend',
+            'name': 'John Johnson',
+            'profilePic': "https://via.placeholder.com/50"
+        },
+        {
+            'type': 'friend',
+            'name': 'Julia Dorr',
+            'profilePic': "https://via.placeholder.com/50"
+        },
+        {
+            'type': 'notFriend',
+            'name': 'Julia Dorr',
+            'profilePic': "https://via.placeholder.com/50"
+        },
+        {
+            'type': 'notFriend',
+            'name': 'Julia Dorr',
+            'profilePic': "https://via.placeholder.com/50"
+        },
+        {
+            'type': 'notFriend',
+            'name': 'Julia Dorr',
+            'profilePic': "https://via.placeholder.com/50"
+        },
+        {
+            'type': 'notFriend',
+            'name': 'Julia Dorr',
+            'profilePic': "https://via.placeholder.com/50"
+        }
+    ]

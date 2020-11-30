@@ -6,7 +6,7 @@ import MySQLdb
 import pymysql.cursors
 
 import random
-from users import Users
+from users import Users, PubFriend, PubNotFriend
 
 # mysql = MySQL()
 
@@ -94,11 +94,15 @@ def create_app(test_config=None):
 
     @app.route("/publicProfileFriend")
     def publicProfileFriend():
-        return render_template("publicProfileFriend.html")
+        return render_template("publicProfileFriend.html",
+            friendList = PubFriend,
+            loadMoreFriend = False)
 
     @app.route("/publicProfileNotFriend")
     def publicProfileNotFriend():
-        return render_template("publicProfileNotFriend.html")
+        return render_template("publicProfileNotFriend.html",
+            friendList = PubNotFriend,
+            loadMoreNotFriend = False)
 
 
     @app.route("/login", methods = ['GET', 'POST'])
