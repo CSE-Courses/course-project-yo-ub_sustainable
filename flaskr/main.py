@@ -129,6 +129,8 @@ def create_app(test_config=None):
                 session['logged_in'] = True
                 session['id'] = data['id']
                 session['username'] = data['username']
+                session['fname'] = data['fname']
+                session['lname'] = data['lname']
                 flash('You are logged in')
                 return redirect(url_for('home'))
             else:
