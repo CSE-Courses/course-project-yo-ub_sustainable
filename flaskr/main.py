@@ -84,25 +84,30 @@ def create_app(test_config=None):
     def chall_pg7():
         return render_template("challenge_pages/custom_challenge.html")
 
+    initLMF = False
+    initLMNF = False
+    initLMPF = False
+    initLMPNF = False
+
     @app.route("/friends")
     def friend():  
         return render_template("friends.html",
             friendList=Users['friends'],
             notFriendList=Users['notFriends'],
-            loadMoreFriend = False,
-            loadMoreNotFriend = False)
+            loadMoreFriend = initLMF,
+            loadMoreNotFriend = initLMNF)
 
     @app.route("/publicProfileFriend")
     def publicProfileFriend():
         return render_template("publicProfileFriend.html",
             friendList = PubFriend,
-            loadMore = False)
+            loadMore = initLMPF)
 
     @app.route("/publicProfileNotFriend")
     def publicProfileNotFriend():
         return render_template("publicProfileNotFriend.html",
             friendList = PubNotFriend,
-            loadMore = False)
+            loadMore = initLMPNF)
 
     @app.route("/login", methods = ['GET', 'POST'])
     def login():
@@ -227,24 +232,24 @@ def create_app(test_config=None):
     @app.route("/loadMoreFriend", methods = ['POST'])
     def loadMoreFriend():
         if request.method == 'POST':
-            loadMoreFriend = True
+            initLMF = True
         return redirect(url_for('friend'))
 
     @app.route("/loadMoreNotFriend", methods = ['POST'])
     def loadMoreNotFriend():
         if request.method == 'POST':
-            loadMoreNotFriend = True
+            initLMNF = True
         return redirect(url_for('friend'))
 
     @app.route("/loadMorePubFriend", methods = ['POST'])
     def loadMorePubFriend():
         if request.method == 'POST':
-            loadMore = True
+            initLMPF = True
         return redirect(url_for('publicProfileFriend'))
 
     @app.route("/loadMorePubNotFriend", methods = ['POST'])
     def loadMorePubNotFriend():
         if request.method == 'POST':
-            loadMore = True
+            initLMPNF = True
         return redirect(url_for('publicProfileNotFriend'))
     return app
