@@ -196,7 +196,7 @@
                   {% endif %}
                 {% endfor %}
               </table>
-            {% elif loadMoreFriend == False %}
+            {% elif loadMore == False %}
               <table>
               {% for friend in range(5) %}
                 {% if friendList[friend]['type'] == 'friend' %}
@@ -223,8 +223,8 @@
               {% endfor %}
                 <tr>
                   <td>
-                    <form action = "/loadMoreFriend" method = "POST">
-                      <button name = "loadMoreFriend" type = "submit"  class="btn btn-secondary btnbtm">Load More</button>
+                    <form action = "/loadMorePubFriend" method = "POST">
+                      <button name = "loadMorePubFriend" type = "submit"  class="btn btn-secondary btnbtm">Load More</button>
                     </form>
                   </td>
                 </tr>
