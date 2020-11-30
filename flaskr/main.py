@@ -180,6 +180,7 @@ def create_app(test_config=None):
             else:
                 with connection2.cursor() as cursor3:
                     cursor3.execute('INSERT INTO accounts VALUES (NULL, %s, %s, %s, %s, %s)', (fname, lname, username, password, email,))
+                    cursor3.execute('INSERT INTO dashboard VALUES (%s, NULL, NULL, NULL)', (username))
                 connection2.commit()
                 msg = 'You have successfully registered!'
             connection2.close()
