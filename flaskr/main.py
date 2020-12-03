@@ -29,7 +29,7 @@ def create_app(test_config=None):
         # MYSQL_DATABASE_PASSWORD='d1a1b9a1',
         # MYSQL_DATABASE_DB='heroku_1e2700f5b989c0b'
     )
-    login = LoginManager(app)
+    # login = LoginManager(app)
     # mysql.init_app(app)
    
 
@@ -56,7 +56,6 @@ def create_app(test_config=None):
         return render_template("index.html")
 
     @app.route("/dash")
-    @login_required
     def dash():
         # connection = pymysql.connect(host='us-cdbr-east-02.cleardb.com',
         #                      user='b33b6415873ff5',
@@ -66,20 +65,20 @@ def create_app(test_config=None):
         #                      cursorclass=pymysql.cursors.DictCursor)
         return render_template("userdashboard.html")
 
-    @app.route("/dash/<username>")
-    @login_required
-    def user(username):
-        connection = pymysql.connect(host='us-cdbr-east-02.cleardb.com',
-                        user='b33b6415873ff5',
-                        password='d1a1b9a1',
-                        db='heroku_1e2700f5b989c0b',
-                        charset='utf8mb4',
-                        cursorclass=pymysql.cursors.DictCursor)
-        with connection.cursor() as cursor:
-                cursor.execute('SELECT * FROM accounts WHERE username = %s', (username, ))
-        data = cursor.fetchone()
-        user = data['username']
-        return user
+    # @app.route("/dash/<username>")
+    # @login_required
+    # def user(username):
+    #     connection = pymysql.connect(host='us-cdbr-east-02.cleardb.com',
+    #                     user='b33b6415873ff5',
+    #                     password='d1a1b9a1',
+    #                     db='heroku_1e2700f5b989c0b',
+    #                     charset='utf8mb4',
+    #                     cursorclass=pymysql.cursors.DictCursor)
+    #     with connection.cursor() as cursor:
+    #             cursor.execute('SELECT * FROM accounts WHERE username = %s', (username, ))
+    #     data = cursor.fetchone()
+    #     user = data['username']
+    #     return user
         
 
     @app.route("/challenge")
