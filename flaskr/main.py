@@ -66,7 +66,7 @@ def create_app(test_config=None):
         #                      cursorclass=pymysql.cursors.DictCursor)
         return render_template("userdashboard.html")
 
-    @app.route("dash/<username>")
+    @app.route("/dash/<username>")
     @login_required
     def user(username):
         connection = pymysql.connect(host='us-cdbr-east-02.cleardb.com',
@@ -78,6 +78,8 @@ def create_app(test_config=None):
         with connection.cursor() as cursor:
                 cursor.execute('SELECT * FROM accounts WHERE username = %s', (username, ))
         data = cursor.fetchone()
+        user = data['username']
+        return user
         
 
     @app.route("/challenge")
