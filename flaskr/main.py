@@ -89,14 +89,53 @@ def create_app(test_config=None):
     initLMPF = False
     initLMPNF = False
 
-    @app.route("/friends")
-    def friend():  
+    @app.route("/friends", methods=['GET','POST'])
+    def friend():
+        msg = ''
         return render_template("friends.html",
             friendList=Users['friends'],
             notFriendList=Users['notFriends'],
             loadMoreFriend = initLMF,
-            loadMoreNotFriend = initLMNF)
+            loadMoreNotFriend = initLMNF, 
+            msg=msg)
 
+    @app.route('/results')
+    def search_results(search):
+
+        #puts first and last name of search results in a list
+        results = [(str(data[1]) + " " + str(data[2])) for data in search]
+
+        # display results
+        return render_template('results.html', results=results)
+
+    @app.route('/search', methods=['GET','POST'])
+    def search():
+        msg = ''
+        if request.method == 'POST' and 'search' in request.form:
+            search = request.form['search']
+            connection = pymysql.connect(host='us-cdbr-east-02.cleardb.com',
+                             user='b33b6415873ff5',
+                             password='d1a1b9a1',
+                             db='heroku_1e2700f5b989c0b',
+                             charset='utf8mb4',
+                             cursorclass=pymysql.cursors.DictCursor)
+            with connection.cursor() as cursor:
+                cursor.execute('SELECT * FROM accounts WHERE username = %s OR email = %s OR fname = %s OR lname = %s', (search, search, search, search))
+            data = cursor.fetchall()
+            if data  == []:
+                msg = (str(search) + ' is not a user in our system.')
+            else:
+                #render results template with data list
+                search_results(data)
+            connection.close()
+
+        return render_template("friends.html",
+            friendList=Users['friends'],
+            notFriendList=Users['notFriends'],
+            loadMoreFriend = initLMF,
+            loadMoreNotFriend = initLMNF, 
+            msg=msg)
+    
     @app.route("/publicProfileFriend")
     def publicProfileFriend():
         return render_template("publicProfileFriend.html",
