@@ -63,7 +63,7 @@
 	<div class="container">
 		<div class="container">
 			<div class="row">
-				<div class="col-11">
+				<div class="col-10">
 					<div class="row">
 						<div class="col">
 							<h1>Your Friends</h1>
@@ -218,7 +218,12 @@
 					</div>
 				</div>
 				<div class="col-1">
-					<input type="text" placeholder="Search Users...">
+					<div class="row">
+						<form action="/search" method="POST">
+							<input type="text" placeholder="Search Users..." name="search">
+						</form>
+					</div>
+					<p>{{msg}}</p>
 				</div>
 			</div>
 		</div>
