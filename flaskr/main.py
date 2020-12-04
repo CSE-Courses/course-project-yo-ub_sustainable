@@ -8,6 +8,8 @@ from flask import redirect
 from flask import url_for
 from flask import session
 from flask import flash
+from flask import make_response
+
 # from flask_mysqldb import MySQL
 # from flask_mysql import MySQL
 # import pymysql
@@ -123,14 +125,22 @@ def create_app(test_config=None):
                              cursorclass=pymysql.cursors.DictCursor)
             with connection.cursor() as cursor:
                 cursor.execute('SELECT * FROM accounts WHERE username = %s AND password = %s', (username, password, ))
+            
             data = cursor.fetchone()
             print(data)
             if data:
                 session['logged_in'] = True
                 session['id'] = data['id']
                 session['username'] = data['username']
+                
+                resp = make_response(redirect(url_for('home')))
+                resp.set_cookie('username', data['username'])
+                resp.set_cookie('fname', data['fname'])
+                resp.set_cookie('lname', data['lname'])
+                
                 flash('You are logged in')
-                return redirect(url_for('home'))
+                
+                return resp
             else:
                 msg = 'Invalid Credentials. Please try again.'
             connection.close()
@@ -142,8 +152,15 @@ def create_app(test_config=None):
         session.pop('logged_in', None)
         session.pop('id', None)
         session.pop('username', None)
+        
+        resp = make_response(redirect(url_for('home')))
+        
+        resp.set_cookie('username', "", max_age = 0)
+        resp.set_cookie('fname', "", max_age = 0)
+        resp.set_cookie('lname', "", max_age = 0)
+        
         flash('You are logged out.')
-        return redirect(url_for('home'))
+        return resp
 
     @app.route("/signup", methods = ['GET', 'POST'])
     def signup():
@@ -226,4 +243,5 @@ def create_app(test_config=None):
             Users['notFriends'].append(unFriend)
             Users['friends'].remove(unFriend)
         return redirect(url_for('friend'))
+    
     return app
