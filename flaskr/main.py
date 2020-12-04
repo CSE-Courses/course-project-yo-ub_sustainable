@@ -291,4 +291,7 @@ def create_app(test_config=None):
         if request.method == 'POST':
             initLMPNF = True
         return redirect(url_for('publicProfileNotFriend'))
+
+
+        
     return app
