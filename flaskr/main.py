@@ -1,6 +1,8 @@
 import os
 import re
 
+from hashlib import md5
+
 from flask import Flask
 from flask import render_template
 from flask import request
@@ -64,6 +66,22 @@ def create_app(test_config=None):
         #                      charset='utf8mb4',
         #                      cursorclass=pymysql.cursors.DictCursor)
         return render_template("userdashboard.html")
+
+    def picture(user, email):
+        connection = pymysql.connect(host='us-cdbr-east-02.cleardb.com',
+                             user='b33b6415873ff5',
+                             password='d1a1b9a1',
+                             db='heroku_1e2700f5b989c0b',
+                             charset='utf8mb4',
+                             cursorclass=pymysql.cursors.DictCursor)
+        with connection.cursor() as cursor:
+            cursor.execute('SELECT * FROM accounts WHERE username = %s AND email = %s', (user, email, ))
+        data = cursor.fetchone() 
+        if data:
+            picture = data['picture']
+            return picture
+        else:
+            return "No image"
 
     # @app.route("/dash/<username>")
     # @login_required
@@ -152,7 +170,10 @@ def create_app(test_config=None):
                 session['username'] = data['username']
                 session['fname'] = data['fname']
                 session['lname'] = data['lname']
+                if "picture" in data.keys():
+                    session['pro_pic'] = data['picture']
                 flash('You are logged in')
+                # print(data['picture'])
                 return redirect(url_for('home'))
             else:
                 msg = 'Invalid Credentials. Please try again.'
@@ -165,6 +186,10 @@ def create_app(test_config=None):
         session.pop('logged_in', None)
         session.pop('id', None)
         session.pop('username', None)
+        # session.pop('pro_pic', None)
+        # session.pop('fname', None)
+        # session.pop('lname', None)
+        # session.pop('email', None)
         flash('You are logged out.')
         return redirect(url_for('home'))
 
@@ -199,11 +224,20 @@ def create_app(test_config=None):
                 # Form was not filled out
                 msg = 'Please enter your information.'
             else:
+                hash_str = md5(email.encode('utf-8')).hexdigest()
+                complete_hash = ('https://www.gravatar.com/avatar/{}?d=identicon&s={}'.format(hash_str, 128))
+                session['pro_pic'] = complete_hash
                 with connection2.cursor() as cursor3:
-                    cursor3.execute('INSERT INTO accounts VALUES (NULL, %s, %s, %s, %s, %s)', (fname, lname, username, password, email,))
+                    cursor3.execute('INSERT INTO accounts VALUES (NULL, %s, %s, %s, %s, %s, %s)', (fname, lname, username, password, email, complete_hash))
                     cursor3.execute('INSERT INTO dashboard VALUES (%s, NULL, NULL, NULL)', (username))
                 connection2.commit()
                 msg = 'You have successfully registered!'
+                session['username'] = username
+                session['fname'] = fname
+                session['lname'] = lname
+                session['email'] = email
+                # msg = complete_hash
+                # print(complete_hash)
             connection2.close()
         elif request.method == 'POST':
             #Form is empty
