@@ -220,7 +220,7 @@
 				<div class="col-1">
 					<div class="row">
 						<form action="/search" method="POST">
-							<input type="text" placeholder="Search Users..." name="search">
+							<input type="text" placeholder="Search Users..." name="search" value="{{  request.form.search }}">
 						</form>
 					</div>
 					<p>{{msg}}</p>
