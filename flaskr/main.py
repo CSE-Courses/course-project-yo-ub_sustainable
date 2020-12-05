@@ -57,7 +57,8 @@ def create_app(test_config=None):
         if session.get('logged_in') == True:
             return render_template("userdashboard.html")
         else:
-            return redirect (url_for('login'))
+            msg = 'Please login to access user-only content'
+            return render_template("login.html", error = msg)
 
     @app.route("/challenge")
     def chall():
@@ -99,7 +100,8 @@ def create_app(test_config=None):
                 friendList=Users['friends'],
                 notFriendList=Users['notFriends'])
         else:
-            return redirect(url_for('login'))
+            msg = 'Please login to access user-only content'
+            return render_template("login.html", error = msg)
 
     @app.route("/publicProfileFriend")
     def publicProfileFriend():
@@ -144,7 +146,7 @@ def create_app(test_config=None):
             else:
                 msg = 'Invalid Credentials. Please try again.'
             connection.close()
-        return render_template("login.html", msg = msg)
+        return render_template("login.html", error = msg)
     
      
     @app.route('/logout')
