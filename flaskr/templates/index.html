@@ -82,7 +82,7 @@
 		<!--End of Navbar-->
 		<div class = "col">
 			<div class = "row justify-content-center ">
-				<h2 style = "">Welcome to (yo)UB Sustainable!</h2>
+				<h2 style = "">Welcome {% if not request.cookies.get('fname') %}to (yo)UB Sustainable{% else %}back, {{ request.cookies.get('fname') }}{% endif %}!</h2> 
 			</div>
 				<div class = "row">
 					<!--left column-->
