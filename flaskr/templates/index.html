@@ -107,27 +107,6 @@
 					
 					<!--right column-->
 					<div class="col-md-6 col-lg-6">
-<<<<<<< HEAD
-=======
-
-						<div class = "col justify-content-center">c
-							<div class = "row justify-content-center">
-								<h3 style = "color: black">Check Out...</h3>
-							</div>
-							<table class = "mx-auto">
-								<tr>
-									<a href="{{ url_for('chall') }}" class="btn btn-secondary btn-lg btn-block" role="button" aria-pressed="true">Sustainability Challenges</a>
-								</tr>
-								<tr>
-									<a href="{{ url_for('rand_chall') }}" class="btn btn-primary btn-lg btn-block" role="button" aria-pressed="true">A Random Challenge</a>
-								</tr>
-								<tr>
-									<a href="{{ url_for('dash') }}" class="btn btn-success btn-lg btn-block" role="button" aria-pressed="true">Your Dashboard</a>
-								</tr>
-								<tr>
-									<a href="{{ url_for('friend') }}" class="btn btn-secondary btn-lg btn-block" role="button" aria-pressed="true">Your Friends' Progress</a>
-								</tr>
->>>>>>> e169afb104c582e250f600cfd0a08da9e54536fb
 
 						<div class = "col justify-content-center">
 							{% if session['logged_in'] == True %}
@@ -173,54 +152,6 @@
 								</div>
 							{% endif %}
 						</div>
-<<<<<<< HEAD
-=======
-
-
-							{% if session['logged_in'] == True %}
-								<!--Buttons-->
-								<div class = "row justify-content-center">
-									<h3 style = "color: black">Check Out...</h3>
-								</div>
-								<table class = "mx-auto">
-									<tr>
-										<a href="{{ url_for('chall') }}" class="btn btn-secondary btn-lg btn-block" role="button" aria-pressed="true">Sustainability Challenges</a>
-									</tr>
-									<tr>
-										<a href="{{ url_for('rand_chall') }}" class="btn btn-primary btn-lg btn-block" role="button" aria-pressed="true">A Random Challenge</a>
-									</tr>
-									<tr>
-										<a href="{{ url_for('dash') }}" class="btn btn-success btn-lg btn-block" role="button" aria-pressed="true">Your Dashboard</a>
-									</tr>
-									<tr>
-										<a href="{{ url_for('friend') }}" class="btn btn-secondary btn-lg btn-block" role="button" aria-pressed="true">Your Friends' Progress</a>
-									</tr>
-								</table>
-							{% else %}
-							<!--Login-->
-								<div class="card text-center bg-secondary">
-									<div class="card-header">
-										<h3>LOG IN FOR SITE ACCESS</h3>
-									</div>
-									<div class="card-body justify-content-center">
-									<form action="{{ url_for('login') }}" method="post">
-										<label for="username">Username: </label><br>
-										<input type="text" placeholder="Username" name="username" value="{{ request.form.username }}"><br>
-										<label for="password">Password:</label><br>
-										<input type="password" placeholder="Password" name="password" value="{{ request.form.password }}"><br>
-										<input class="btn btn-primary" type="submit" value="Log In">
-									</form>
-									{% if error %}
-										<p class="error"><strong>Error:</strong> {{ error }}
-									{% endif %}
-									</div>
-									<div>
-										<a href="{{ url_for('signup') }}">Register for an Account</a>
-									</div>
-								</div>
-							{% endif %}
-						</div>
->>>>>>> e169afb104c582e250f600cfd0a08da9e54536fb
 					</div>
 				</div>
 				
