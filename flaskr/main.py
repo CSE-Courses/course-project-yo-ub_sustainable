@@ -93,6 +93,11 @@ def create_app(test_config=None):
     def chall_pg7():
         return render_template("challenge_pages/custom_challenge.html")
 
+    #Addition for new Custom Challenge specific page
+    @app.route("/challengeCustom")
+    def chall_pg8():
+        return render_template("new_custom_challenge.php")
+
     @app.route("/friends")
     def friend():  
         return render_template("friends.html",
@@ -205,7 +210,14 @@ def create_app(test_config=None):
                     charset='utf8mb4',
                     cursorclass=pymysql.cursors.DictCursor)
             with connection2.cursor() as cursor3:
-                cursor3.execute('INSERT INTO challenges VALUES (NULL, %s, %s, %s, %s, %s, %s)', (challengeName, shortDescription,  SelectDuration,  SelectCategory, theImpact,sugegstionsHelp,))
+                cursor3.execute("UPDATE challenges SET 
+                        name = challengeName,
+                        description = shortDescription,
+                        duration = SelectDuration,
+                        category = SelectCategory,
+                        impact =  theImpact,
+                        suggestions = sugegstionsHelp WHERE
+                        id = 1")
             connection2.commit()
             connection2.close()
         elif request.method == 'POST':

@@ -12,7 +12,7 @@
     <!-- import font -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
     
-    <title>Challenge Page 4</title>
+    <title>New Custom Challenge Page 1</title>
   </head>
   <body>
 	<!--Navbar-->
@@ -50,14 +50,39 @@
     </div>
   </nav>	
   <!--end of Navbar--> 
-	
+
+ <!-- Start of PHP -->
+  <?php
+    $dbHost = 'us-cdbr-east-02.cleardb.com';
+    $dbUser = 'b2cb10b2b21b72';
+    $dbPass = '1b8b9cc5';
+    $dbName = 'heroku_318469e412eb0ae'
+
+    //Set DSN
+    $dsn = 'mysql:host='. $dbHost .';dbname='. $dbName;
+
+    // Create a PDO instance
+    $pdo = new PDO($dsn, $udbUer, $dbPass);
+    $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_OBJ);
+
+    // User Input
+    $id = 1;
+    #PDO Query
+
+    $sql = 'SELECT * FROM challenges WHERE id = :id';
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute(['id' => $id]);
+    $post = $stmt->fetch();
+  ?>
+  <!-- End of PHP -->
+
     <!-- PAGE HEADER SECTION CHALLENGE NAME-->
     <div class="container">
       <div class="row">
         <div class="col-1">
         </div>
         <div class="col-6">
-          <h1>Diet Changes</h1>
+          <h1><?php echo post-> name; ?></h1>
         </div> 
       </div>
       <div class="row greenback">
@@ -75,24 +100,23 @@
     <div class="container">
       <div class="row">
         <div class="col-1">
-        </div>
+        </div>  
         <div class="col-6">
-          <p> Adopting a sustainable diet can help maintain an individual’s health while also making sure the planet has enough resources to feed future generations of humans.
-            This is a complex idea, but in the simplest terms, a sustainable diet looks to have a positive impact on the individual and environment, both now and in the future. </p>
+          <p> <?php echo post->decription; ?> </p>
           <div class-"row">
             <!-- first tag - time! -->
             <div class="col-3 ctsize">
-              <a href="#" class="btn btn-secondary btnbtm">WEEKLY</a>
+              <a href="#" class="btn btn-secondary btnbtm"><?php echo post-> duration; ?></a>
             </div>
             <!-- second tag - Category -->
             <div class="col-3 ctsize">
-              <a href="#" class="btn btn-secondary btnbtm">Category</a>
+              <a href="#" class="btn btn-secondary btnbtm"><?php echo post-> category; ?></a>
             </div>
           </div>
         </div> 
-        <div class="col-4">
-          <img src ="https://upload.wikimedia.org/wikipedia/commons/a/a1/FoodSourcesOfMagnesium.jpg" class="pfp img-thumbnail">
-        </div>
+        <!--<div class="col-4">
+          <img src ="https://upload.wikimedia.org/wikipedia/commons/2/20/Drinking_straws_2_2018-10-16.jpg" class="img-thumbnail">
+        </div>-->
       </div>
       <div class="row greenback">
         <h4>
@@ -108,10 +132,7 @@
         </div>
         <div class="col-6">
           <h5>The Impact</h5>
-          <p>There are no set rules on what makes a diet sustainable. However, some diets and food items might be more sustainable than others, and choosing them can help a person reduce their environmental impact.
-            The EAT-Lancet Commission, a group of scientists from 16 different countries, addressed the existing evidence surrounding the planet’s food demands, waste, and overall diet.
-            According to the Commission, food production is the world’s largest cause of environmental change. They note that vegan and vegetarian diets have the greatest reduction in land use and greenhouse gas emissions, and that vegetarian diets use the least water. 
-          </p>    
+          <p><?php echo post-> impact; ?></p>    
         </div> 
       </div>
     </div>
@@ -124,17 +145,15 @@
         </div>
         <div class="col-6">
           <h5>Helpful Suggestions</h5>
-          <p>- Try to make small edits by reducing the number of meals you have with meat!</p> 
-          <p>- Least sustainable options - lamb, beef, cheese, pork, farmed salmon </p>
-          <p>- Do your best for the planet</p>   
+          <p><?php echo post-> suggestions; ?></p> 
+          <!--<p>- You can buy large packs online!</p>
+          <p>- Simple chage in your lifestlye, one in your bag and one at home.</p>  --> 
         </div> 
       </div>
         <br>
-      <div class = "row">
-        <button type="button" class="btn btn-secondary col-4">SAVE</button>
-        <button type="button" class="btn btn-success col-4">SELECT</button>
-        <button type="button" class="btn btn-secondary col-4">COMPLETED</button>
-      </div>
+      <!--<div class = "row">
+        <a href="#" class="btn btn-secondary col-12">SELECT</a>
+      </div> -->
     </div>
       <br>
 
