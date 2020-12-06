@@ -26,12 +26,13 @@ def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
         SECRET_KEY='dev',
-        # MYSQL_DATABASE_HOST='us-cdbr-east-02.cleardb.com',
-        # MYSQL_PORT=15551,
-        # MYSQL_DATABSE_USER='b33b6415873ff5',
-        # MYSQL_DATABASE_PASSWORD='d1a1b9a1',
-        # MYSQL_DATABASE_DB='heroku_1e2700f5b989c0b'
+        MYSQL_DATABASE_HOST='us-cdbr-east-02.cleardb.com',
+        MYSQL_PORT=15551,
+        MYSQL_DATABSE_USER='b33b6415873ff5',
+        MYSQL_DATABASE_PASSWORD='d1a1b9a1',
+        MYSQL_DATABASE_DB='heroku_1e2700f5b989c0b'
     )
+
     # login = LoginManager(app)
     # mysql.init_app(app)
    
@@ -48,11 +49,6 @@ def create_app(test_config=None):
         os.makedirs(app.instance_path)
     except OSError:
         pass
-
-    # a simple page that says hello
-    @app.route('/hello')
-    def hello():
-        return 'Hello, World!'
 
     @app.route("/")
     def home():
@@ -100,10 +96,14 @@ def create_app(test_config=None):
         return render_template("challenge_pages/custom_challenge.html")
 
     @app.route("/friends")
-    def friend():  
-        return render_template("friends.html",
-            friendList=Users['friends'],
-            notFriendList=Users['notFriends'])
+    def friend():
+        if session.get('logged_in') == True:
+            return render_template("friends.html",
+                friendList=Users['friends'],
+                notFriendList=Users['notFriends'])
+        else:
+            msg = 'Please login to access user-only content'
+            return render_template("login.html", error = msg)
 
     @app.route("/publicProfileFriend")
     def publicProfileFriend():
@@ -178,8 +178,6 @@ def create_app(test_config=None):
             username = request.form['username']
             password = request.form['password']
             email = request.form['email']
-            fname = request.form['fname']
-            lname = request.form['lname']
             connection2 = pymysql.connect(host='us-cdbr-east-02.cleardb.com',
                     user='b33b6415873ff5',
                     password='d1a1b9a1',
@@ -208,6 +206,7 @@ def create_app(test_config=None):
                 with connection2.cursor() as cursor3:
                     cursor3.execute('INSERT INTO accounts VALUES (NULL, %s, %s, %s, %s, %s, %s)', (fname, lname, username, password, email, complete_hash))
                     cursor3.execute('INSERT INTO dashboard VALUES (%s, NULL, NULL, NULL)', (username))
+
                 connection2.commit()
                 msg = 'You have successfully registered!'
                 session['username'] = username
@@ -264,4 +263,5 @@ def create_app(test_config=None):
             Users['notFriends'].append(unFriend)
             Users['friends'].remove(unFriend)
         return redirect(url_for('friend'))
+    
     return app
