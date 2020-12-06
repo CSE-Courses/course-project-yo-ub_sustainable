@@ -52,28 +52,7 @@
   <!--end of Navbar--> 
 
  <!-- Start of PHP -->
-  <?php
-    $dbHost = 'us-cdbr-east-02.cleardb.com';
-    $dbUser = 'b2cb10b2b21b72';
-    $dbPass = '1b8b9cc5';
-    $dbName = 'heroku_318469e412eb0ae'
-
-    //Set DSN
-    $dsn = 'mysql:host='. $dbHost .';dbname='. $dbName;
-
-    // Create a PDO instance
-    $pdo = new PDO($dsn, $udbUer, $dbPass);
-    $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_OBJ);
-
-    // User Input
-    $id = 1;
-    #PDO Query
-
-    $sql = 'SELECT * FROM challenges WHERE id = :id';
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute(['id' => $id]);
-    $post = $stmt->fetch();
-  ?>
+  
   <!-- End of PHP -->
 
     <!-- PAGE HEADER SECTION CHALLENGE NAME-->
@@ -82,7 +61,8 @@
         <div class="col-1">
         </div>
         <div class="col-6">
-          <h1><?php echo post-> name; ?></h1>
+          <!--<h1><?php echo post-> name; ?></h1>-->
+          <h1>{{ newCC["name"] }}</h1>
         </div> 
       </div>
       <div class="row greenback">
@@ -102,15 +82,16 @@
         <div class="col-1">
         </div>  
         <div class="col-6">
-          <p> <?php echo post->decription; ?> </p>
+          <!-- <p> <?php echo post->decription; ?> </p> -->
+          <p> {{ newCC["description"] }} </p>
           <div class-"row">
             <!-- first tag - time! -->
             <div class="col-3 ctsize">
-              <a href="#" class="btn btn-secondary btnbtm"><?php echo post-> duration; ?></a>
+              <a href="#" class="btn btn-secondary btnbtm">{{ newCC["duration"] }}</a>
             </div>
             <!-- second tag - Category -->
             <div class="col-3 ctsize">
-              <a href="#" class="btn btn-secondary btnbtm"><?php echo post-> category; ?></a>
+              <a href="#" class="btn btn-secondary btnbtm">{{ newCC["category"] }}</a>
             </div>
           </div>
         </div> 
@@ -132,7 +113,8 @@
         </div>
         <div class="col-6">
           <h5>The Impact</h5>
-          <p><?php echo post-> impact; ?></p>    
+          <!--<p><?php echo post-> impact; ?></p>  -->
+          <p>{{ newCC["impact"] }}  </p>
         </div> 
       </div>
     </div>
@@ -145,7 +127,8 @@
         </div>
         <div class="col-6">
           <h5>Helpful Suggestions</h5>
-          <p><?php echo post-> suggestions; ?></p> 
+          <!--<p><?php echo post-> suggestions; ?></p> -->
+          <p>{{ newCC["suggestions"] }}</p>
           <!--<p>- You can buy large packs online!</p>
           <p>- Simple chage in your lifestlye, one in your bag and one at home.</p>  --> 
         </div> 
