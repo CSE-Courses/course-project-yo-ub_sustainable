@@ -12,6 +12,7 @@ from flask import session
 from flask import flash
 from flask_login import LoginManager
 from flask_login import login_required
+from flask import make_response
 import MySQLdb
 import pymysql.cursors
 
@@ -59,45 +60,11 @@ def create_app(test_config=None):
 
     @app.route("/dash")
     def dash():
-        # connection = pymysql.connect(host='us-cdbr-east-02.cleardb.com',
-        #                      user='b33b6415873ff5',
-        #                      password='d1a1b9a1',
-        #                      db='heroku_1e2700f5b989c0b',
-        #                      charset='utf8mb4',
-        #                      cursorclass=pymysql.cursors.DictCursor)
-        return render_template("userdashboard.html")
-
-    def picture(user, email):
-        connection = pymysql.connect(host='us-cdbr-east-02.cleardb.com',
-                             user='b33b6415873ff5',
-                             password='d1a1b9a1',
-                             db='heroku_1e2700f5b989c0b',
-                             charset='utf8mb4',
-                             cursorclass=pymysql.cursors.DictCursor)
-        with connection.cursor() as cursor:
-            cursor.execute('SELECT * FROM accounts WHERE username = %s AND email = %s', (user, email, ))
-        data = cursor.fetchone() 
-        if data:
-            picture = data['picture']
-            return picture
+        if session.get('logged_in') == True:
+            return render_template("userdashboard.html")
         else:
-            return "No image"
-
-    # @app.route("/dash/<username>")
-    # @login_required
-    # def user(username):
-    #     connection = pymysql.connect(host='us-cdbr-east-02.cleardb.com',
-    #                     user='b33b6415873ff5',
-    #                     password='d1a1b9a1',
-    #                     db='heroku_1e2700f5b989c0b',
-    #                     charset='utf8mb4',
-    #                     cursorclass=pymysql.cursors.DictCursor)
-    #     with connection.cursor() as cursor:
-    #             cursor.execute('SELECT * FROM accounts WHERE username = %s', (username, ))
-    #     data = cursor.fetchone()
-    #     user = data['username']
-    #     return user
-        
+            msg = 'Please login to access user-only content'
+            return render_template("login.html", error = msg)
 
     @app.route("/challenge")
     def chall():
@@ -162,6 +129,7 @@ def create_app(test_config=None):
                              cursorclass=pymysql.cursors.DictCursor)
             with connection.cursor() as cursor:
                 cursor.execute('SELECT * FROM accounts WHERE username = %s AND password = %s', (username, password, ))
+            
             data = cursor.fetchone()
             # print(data)
             if data:
@@ -173,12 +141,19 @@ def create_app(test_config=None):
                 if "picture" in data.keys():
                     session['pro_pic'] = data['picture']
                 flash('You are logged in')
-                # print(data['picture'])
-                return redirect(url_for('home'))
+                resp = make_response(redirect(url_for('home')))
+                resp.set_cookie('username', data['username'])
+                resp.set_cookie('fname', data['fname'])
+                resp.set_cookie('lname', data['lname'])
+                
+                flash('You are logged in')
+                
+                return resp
+
             else:
                 msg = 'Invalid Credentials. Please try again.'
             connection.close()
-        return render_template("login.html", msg = msg)
+        return render_template("login.html", error = msg)
     
      
     @app.route('/logout')
@@ -186,12 +161,15 @@ def create_app(test_config=None):
         session.pop('logged_in', None)
         session.pop('id', None)
         session.pop('username', None)
-        # session.pop('pro_pic', None)
-        # session.pop('fname', None)
-        # session.pop('lname', None)
-        # session.pop('email', None)
+        
+        resp = make_response(redirect(url_for('home')))
+        
+        resp.set_cookie('username', "", max_age = 0)
+        resp.set_cookie('fname', "", max_age = 0)
+        resp.set_cookie('lname', "", max_age = 0)
+        
         flash('You are logged out.')
-        return redirect(url_for('home'))
+        return resp
 
     @app.route("/signup", methods = ['GET', 'POST'])
     def signup():
