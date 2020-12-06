@@ -13,7 +13,6 @@ from flask import flash
 from flask_login import LoginManager
 from flask_login import login_required
 from flask import make_response
-
 import MySQLdb
 import pymysql.cursors
 
@@ -57,52 +56,11 @@ def create_app(test_config=None):
 
     @app.route("/dash")
     def dash():
-        # connection = pymysql.connect(host='us-cdbr-east-02.cleardb.com',
-        #                      user='b33b6415873ff5',
-        #                      password='d1a1b9a1',
-        #                      db='heroku_1e2700f5b989c0b',
-        #                      charset='utf8mb4',
-        #                      cursorclass=pymysql.cursors.DictCursor)
-        return render_template("userdashboard.html")
-      
         if session.get('logged_in') == True:
             return render_template("userdashboard.html")
         else:
             msg = 'Please login to access user-only content'
             return render_template("login.html", error = msg)
-
-
-    def picture(user, email):
-        connection = pymysql.connect(host='us-cdbr-east-02.cleardb.com',
-                             user='b33b6415873ff5',
-                             password='d1a1b9a1',
-                             db='heroku_1e2700f5b989c0b',
-                             charset='utf8mb4',
-                             cursorclass=pymysql.cursors.DictCursor)
-        with connection.cursor() as cursor:
-            cursor.execute('SELECT * FROM accounts WHERE username = %s AND email = %s', (user, email, ))
-        data = cursor.fetchone() 
-        if data:
-            picture = data['picture']
-            return picture
-        else:
-            return "No image"
-
-    # @app.route("/dash/<username>")
-    # @login_required
-    # def user(username):
-    #     connection = pymysql.connect(host='us-cdbr-east-02.cleardb.com',
-    #                     user='b33b6415873ff5',
-    #                     password='d1a1b9a1',
-    #                     db='heroku_1e2700f5b989c0b',
-    #                     charset='utf8mb4',
-    #                     cursorclass=pymysql.cursors.DictCursor)
-    #     with connection.cursor() as cursor:
-    #             cursor.execute('SELECT * FROM accounts WHERE username = %s', (username, ))
-    #     data = cursor.fetchone()
-    #     user = data['username']
-    #     return user
-        
 
     @app.route("/challenge")
     def chall():
@@ -183,9 +141,6 @@ def create_app(test_config=None):
                 if "picture" in data.keys():
                     session['pro_pic'] = data['picture']
                 flash('You are logged in')
-                # print(data['picture'])
-                return redirect(url_for('home'))
-                
                 resp = make_response(redirect(url_for('home')))
                 resp.set_cookie('username', data['username'])
                 resp.set_cookie('fname', data['fname'])
@@ -206,10 +161,6 @@ def create_app(test_config=None):
         session.pop('logged_in', None)
         session.pop('id', None)
         session.pop('username', None)
-        # session.pop('pro_pic', None)
-        # session.pop('fname', None)
-        # session.pop('lname', None)
-        # session.pop('email', None)
         
         resp = make_response(redirect(url_for('home')))
         
