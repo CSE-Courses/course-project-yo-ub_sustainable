@@ -8,6 +8,8 @@ from flask import redirect
 from flask import url_for
 from flask import session
 from flask import flash
+from flask import make_response
+
 # from flask_mysqldb import MySQL
 # from flask_mysql import MySQL
 # import pymysql
@@ -24,13 +26,12 @@ def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
         SECRET_KEY='dev',
-        # MYSQL_DATABASE_HOST='us-cdbr-east-02.cleardb.com',
-        # MYSQL_PORT=15551,
-        # MYSQL_DATABSE_USER='b33b6415873ff5',
-        # MYSQL_DATABASE_PASSWORD='d1a1b9a1',
-        # MYSQL_DATABASE_DB='heroku_1e2700f5b989c0b'
+        MYSQL_DATABASE_HOST='us-cdbr-east-02.cleardb.com',
+        MYSQL_PORT=15551,
+        MYSQL_DATABSE_USER='b33b6415873ff5',
+        MYSQL_DATABASE_PASSWORD='d1a1b9a1',
+        MYSQL_DATABASE_DB='heroku_1e2700f5b989c0b'
     )
-
     # mysql.init_app(app)
    
 
@@ -47,18 +48,17 @@ def create_app(test_config=None):
     except OSError:
         pass
 
-    # a simple page that says hello
-    @app.route('/hello')
-    def hello():
-        return 'Hello, World!'
-
     @app.route("/")
     def home():
         return render_template("index.html")
 
     @app.route("/dash")
     def dash():
-        return render_template("userdashboard.html")
+        if session.get('logged_in') == True:
+            return render_template("userdashboard.html")
+        else:
+            msg = 'Please login to access user-only content'
+            return render_template("login.html", error = msg)
 
     @app.route("/challenge")
     def chall():
@@ -94,10 +94,14 @@ def create_app(test_config=None):
         return render_template("challenge_pages/custom_challenge.html")
 
     @app.route("/friends")
-    def friend():  
-        return render_template("friends.html",
-            friendList=Users['friends'],
-            notFriendList=Users['notFriends'])
+    def friend():
+        if session.get('logged_in') == True:
+            return render_template("friends.html",
+                friendList=Users['friends'],
+                notFriendList=Users['notFriends'])
+        else:
+            msg = 'Please login to access user-only content'
+            return render_template("login.html", error = msg)
 
     @app.route("/publicProfileFriend")
     def publicProfileFriend():
@@ -123,18 +127,26 @@ def create_app(test_config=None):
                              cursorclass=pymysql.cursors.DictCursor)
             with connection.cursor() as cursor:
                 cursor.execute('SELECT * FROM accounts WHERE username = %s AND password = %s', (username, password, ))
+            
             data = cursor.fetchone()
             print(data)
             if data:
                 session['logged_in'] = True
                 session['id'] = data['id']
                 session['username'] = data['username']
+                
+                resp = make_response(redirect(url_for('home')))
+                resp.set_cookie('username', data['username'])
+                resp.set_cookie('fname', data['fname'])
+                resp.set_cookie('lname', data['lname'])
+                
                 flash('You are logged in')
-                return redirect(url_for('home'))
+                
+                return resp
             else:
                 msg = 'Invalid Credentials. Please try again.'
             connection.close()
-        return render_template("login.html", msg = msg)
+        return render_template("login.html", error = msg)
     
      
     @app.route('/logout')
@@ -142,8 +154,15 @@ def create_app(test_config=None):
         session.pop('logged_in', None)
         session.pop('id', None)
         session.pop('username', None)
+        
+        resp = make_response(redirect(url_for('home')))
+        
+        resp.set_cookie('username', "", max_age = 0)
+        resp.set_cookie('fname', "", max_age = 0)
+        resp.set_cookie('lname', "", max_age = 0)
+        
         flash('You are logged out.')
-        return redirect(url_for('home'))
+        return resp
 
     @app.route("/signup", methods = ['GET', 'POST'])
     def signup():
@@ -152,8 +171,6 @@ def create_app(test_config=None):
             username = request.form['username']
             password = request.form['password']
             email = request.form['email']
-            fname = request.form['fname']
-            lname = request.form['lname']
             connection2 = pymysql.connect(host='us-cdbr-east-02.cleardb.com',
                     user='b33b6415873ff5',
                     password='d1a1b9a1',
@@ -177,7 +194,7 @@ def create_app(test_config=None):
                 msg = 'Please enter your information.'
             else:
                 with connection2.cursor() as cursor3:
-                    cursor3.execute('INSERT INTO accounts VALUES (NULL, %s, %s, %s, %s, %s)', (fname, lname, username, password, email,))
+                    cursor3.execute('INSERT INTO accounts VALUES (NULL, %s, %s, %s)', (username, password, email,))
                 connection2.commit()
                 msg = 'You have successfully registered!'
             connection2.close()
@@ -228,4 +245,5 @@ def create_app(test_config=None):
             Users['notFriends'].append(unFriend)
             Users['friends'].remove(unFriend)
         return redirect(url_for('friend'))
+    
     return app
