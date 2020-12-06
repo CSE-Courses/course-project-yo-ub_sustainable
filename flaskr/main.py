@@ -57,6 +57,22 @@ def create_app(test_config=None):
     @app.route("/dash")
     def dash():
         if session.get('logged_in') == True:
+            connection = pymysql.connect(host='us-cdbr-east-02.cleardb.com',
+                             user='b33b6415873ff5',
+                             password='d1a1b9a1',
+                             db='heroku_1e2700f5b989c0b',
+                             charset='utf8mb4',
+                             cursorclass=pymysql.cursors.DictCursor)
+            with connection.cursor() as cursor:
+                cursor.execute('SELECT saved, progress, completed FROM dashboard WHERE user = %s', (session['username']))
+            challs = cursor.fetchone()
+            if challs:
+                sav = challs['saved'].split("|")
+                pro = challs['progress'].split("|")
+                com = challs['completed'].split("|")
+                session['saved'] = sav
+                session['progress'] = pro
+                session['completed'] = com
             return render_template("userdashboard.html")
         else:
             msg = 'Please login to access user-only content'
@@ -245,7 +261,7 @@ def create_app(test_config=None):
                 if user['name'] == name:
                     return user['profilePic']
         return None
-    
+   
     @app.route("/addFriend", methods = ['POST'])
     def addFriend():
         if request.method == 'POST':
