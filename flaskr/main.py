@@ -222,7 +222,7 @@ def create_app(test_config=None):
             connection2.close()
         elif request.method == 'POST':
             #Form is empty
-            msg = 'Please enter informaton for Custom Challenge.'
+            msg = 'Please enter all informaton for Custom Challenge.'
         
         return render_template("challenge_pages/custom_challenge.html", msg = msg)
 
