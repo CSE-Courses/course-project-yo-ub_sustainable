@@ -17,7 +17,7 @@
 <body>
 	<!--Navbar-->
 		<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #86E49E;">
-			<a class="navbar-brand" href="{{ url_for('home') }}"><img src ="static/logo.png" class="img-fluid" width="30" height="30" alt="">(Yo)UB Sustainable</a>	
+			<a class="navbar-brand" href="{{ url_for('home') }}"><img src ="static/logo.png" class="img-fluid" width="30" height="30" alt="">(Yo)UB Sustainable</a>
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
 			</button>
@@ -38,6 +38,7 @@
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
 					{% if session['logged_in'] == True %}
+          <p>Hello {{session.username}}!</p>
 						<li>
 							<a href="{{ url_for('logout') }}" class="btn btn-outline-danger my-2 my-sm-0">Logout</a>
 						</li>
@@ -48,16 +49,17 @@
                     {% endif %}
                 </ul>
 			</div>
-		</nav>	
+		</nav>
 		<!--end of Navbar-->
 
+{% if session['logged_in'] == True %}
   <div class="container">
     <div class="container">
       <div class="row">
         <div class="col-1">
         </div>
         <div class="col-6">
-          <h1>First Last Name</h1>
+          <h1>{{session.fname}} {{session.lname}}</h1>
           <p> Eco Superstar</p>
           <div class="row">
             <div class="col">
@@ -71,7 +73,17 @@
           </div>
         </div>
         <div class="col-4">
-          <img src ="https://via.placeholder.com/200" class="pfp img-thumbnail">
+          {% set m = session.email  %}
+          {% set u = session.username  %}
+          <!-- <h2> {{session.pro_pic}}</h2> -->
+          <img id = "profile" src = "" class="pfp img-thumbnail">
+          <p hidden id="hidden-p">{{session.pro_pic}}</p>
+          <script>
+            // let profilePic = {{ session.pro_pic }};
+            let url = document.getElementById("hidden-p").innerHTML;
+            console.log(url);
+            document.getElementById("profile").src = url;
+          </script>
         </div>
         <div class="col-1">
         </div>
@@ -201,7 +213,9 @@
       <a href="#" class="btn btn-secondary col-12">Sign Out</a>
     </div>
   </div>
-
+ {% else %}
+  <h2>Please log in to view your dashboard!</h2>
+ {% endif %}
   <!-- Optional JavaScript -->
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
