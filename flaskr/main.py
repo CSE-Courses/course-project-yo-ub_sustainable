@@ -201,6 +201,8 @@ def create_app(test_config=None):
             username = request.form['username']
             password = request.form['password']
             email = request.form['email']
+            fname = request.form['fname']
+            lname = request.form['lname']
             connection2 = pymysql.connect(host='us-cdbr-east-02.cleardb.com',
                     user='b33b6415873ff5',
                     password='d1a1b9a1',
@@ -227,8 +229,8 @@ def create_app(test_config=None):
                 complete_hash = ('https://www.gravatar.com/avatar/{}?d=identicon&s={}'.format(hash_str, 128))
                 session['pro_pic'] = complete_hash
                 with connection2.cursor() as cursor3:
-                    cursor3.execute('INSERT INTO accounts VALUES (NULL, %s, %s, %s, %s, %s, %s)', (fname, lname, username, password, email, complete_hash))
-                    cursor3.execute('INSERT INTO dashboard VALUES (%s, 'the Earth', 'being sustainable', 'sign up')', (username))
+                    cursor3.execute("INSERT INTO accounts VALUES (NULL, %s, %s, %s, %s, %s, %s)", (fname, lname, username, password, email, complete_hash))
+                    cursor3.execute("INSERT INTO dashboard VALUES (%s, %s, %s, %s,)", (username, "the Earth", "being sustainable", "sign up")) 
 
                 connection2.commit()
                 msg = 'You have successfully registered!'
