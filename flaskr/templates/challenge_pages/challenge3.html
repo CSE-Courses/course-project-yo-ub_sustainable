@@ -127,9 +127,18 @@
       </div>
         <br>
       <div class = "row">
-        <button type="button" class="btn btn-secondary col-4">SAVE</button>
+        <!-- <button type="button" class="btn btn-secondary col-4">SAVE</button>
         <button type="button" class="btn btn-success col-4">SELECT</button>
-        <button type="button" class="btn btn-secondary col-4">COMPLETED</button>
+        <button type="button" class="btn btn-secondary col-4">COMPLETED</button> -->
+        <form action = "/saveChallenge" method = "POST">
+          <button type = "submit"  name = "saveChallenge"  value = "|Farmers Market" class="btn btn-secondary">SAVE</button>
+        </form>
+        <form action = "/addChallenge" method = "POST">
+          <button type = "submit"  name = "addChallenge"  value = "|Farmers Market" class="btn btn-success">SELECT</button>
+        </form>
+        <form action = "/compChallenge" method = "POST">
+          <button type = "submit"  name = "compChallenge"  value = "|Farmers Market" class="btn btn-secondary">COMPLETED</button>
+        </form>
       </div>
     </div>
       <br>

@@ -271,6 +271,74 @@ def create_app(test_config=None):
         #return render_template("challenge_pages/custom_challenge.html", msg = msg, newCC = newChallenge)
         return redirect(url_for('chall_pg8'))
 
+     #function for adding challenge
+    
+    #function for adding challenge - in progress section
+    @app.route("/addChallenge", methods = ['POST'])
+    def addChallenge():
+        if request.method == 'POST':
+            added_chall_name = request.form['addChallenge']
+            current_user = session['username']
+            connection2 = pymysql.connect(host='us-cdbr-east-02.cleardb.com',
+                             user='b33b6415873ff5',
+                             password='d1a1b9a1',
+                             db='heroku_1e2700f5b989c0b',
+                             charset='utf8mb4',
+                             cursorclass=pymysql.cursors.DictCursor)
+            with connection2.cursor() as cursor2:
+                cursor2.execute('SELECT progress FROM dashboard WHERE user = %s', (current_user))
+                progress_chall = cursor2.fetchone()
+                upd_progress = progress_chall['progress'] + added_chall_name
+                # print(upd_progress)
+                cursor2.execute('UPDATE dashboard  SET progress =%s WHERE user=%s', (upd_progress,current_user))
+            connection2.commit()
+            connection2.close()
+        return redirect(url_for('dash'))
+    
+    #function for adding challenge - save section
+    @app.route("/saveChallenge", methods = ['POST'])
+    def saveChallenge():
+        if request.method == 'POST':
+            saved_chall_name = request.form['saveChallenge']
+            current_user = session['username']
+            connection2 = pymysql.connect(host='us-cdbr-east-02.cleardb.com',
+                             user='b33b6415873ff5',
+                             password='d1a1b9a1',
+                             db='heroku_1e2700f5b989c0b',
+                             charset='utf8mb4',
+                             cursorclass=pymysql.cursors.DictCursor)
+            with connection2.cursor() as cursor2:
+                cursor2.execute('SELECT saved FROM dashboard WHERE user = %s', (current_user))
+                saved_chall = cursor2.fetchone()
+                upd_saved = saved_chall['saved'] + saved_chall_name
+                # print(upd_progress)
+                cursor2.execute('UPDATE dashboard  SET progress =%s WHERE user=%s', (upd_saved,current_user))
+            connection2.commit()
+            connection2.close()
+        return redirect(url_for('dash'))
+
+    #function for adding challenge - save section
+    @app.route("/compChallenge", methods = ['POST'])
+    def compChallenge():
+        if request.method == 'POST':
+            comp_chall_name = request.form['compChallenge']
+            current_user = session['username']
+            connection2 = pymysql.connect(host='us-cdbr-east-02.cleardb.com',
+                             user='b33b6415873ff5',
+                             password='d1a1b9a1',
+                             db='heroku_1e2700f5b989c0b',
+                             charset='utf8mb4',
+                             cursorclass=pymysql.cursors.DictCursor)
+            with connection2.cursor() as cursor2:
+                cursor2.execute('SELECT completed FROM dashboard WHERE user = %s', (current_user))
+                comp_chall = cursor2.fetchone()
+                upd_comp = comp_chall['completed'] + comp_chall_name
+                # print(upd_progress)
+                cursor2.execute('UPDATE dashboard  SET progress =%s WHERE user=%s', (upd_comp,current_user))
+            connection2.commit()
+            connection2.close()
+        return redirect(url_for('dash'))
+
     @app.route("/css")
     def css():
         return render_template("static/css/style.css") 
