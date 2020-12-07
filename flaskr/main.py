@@ -261,7 +261,7 @@ def create_app(test_config=None):
                 saved_chall = cursor2.fetchone()
                 upd_saved = saved_chall['saved'] + saved_chall_name
                 # print(upd_progress)
-                cursor2.execute('UPDATE dashboard  SET progress =%s WHERE user=%s', (upd_saved,current_user))
+                cursor2.execute('UPDATE dashboard  SET saved =%s WHERE user=%s', (upd_saved,current_user))
             connection2.commit()
             connection2.close()
         return redirect(url_for('dash'))
@@ -283,7 +283,7 @@ def create_app(test_config=None):
                 comp_chall = cursor2.fetchone()
                 upd_comp = comp_chall['completed'] + comp_chall_name
                 # print(upd_progress)
-                cursor2.execute('UPDATE dashboard  SET progress =%s WHERE user=%s', (upd_comp,current_user))
+                cursor2.execute('UPDATE dashboard  SET completed =%s WHERE user=%s', (upd_comp,current_user))
             connection2.commit()
             connection2.close()
         return redirect(url_for('dash'))
