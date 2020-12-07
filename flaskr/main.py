@@ -201,6 +201,8 @@ def create_app(test_config=None):
             username = request.form['username']
             password = request.form['password']
             email = request.form['email']
+            fname = request.form['fname']
+            lname = request.form['lname']
             connection2 = pymysql.connect(host='us-cdbr-east-02.cleardb.com',
                     user='b33b6415873ff5',
                     password='d1a1b9a1',
@@ -227,8 +229,8 @@ def create_app(test_config=None):
                 complete_hash = ('https://www.gravatar.com/avatar/{}?d=identicon&s={}'.format(hash_str, 128))
                 session['pro_pic'] = complete_hash
                 with connection2.cursor() as cursor3:
-                    cursor3.execute('INSERT INTO accounts VALUES (NULL, %s, %s, %s, %s, %s, %s)', (fname, lname, username, password, email, complete_hash))
-                    cursor3.execute('INSERT INTO dashboard VALUES (%s, NULL, NULL, NULL)', (username))
+                    cursor3.execute("INSERT INTO accounts VALUES (NULL, %s, %s, %s, %s, %s, %s)", (fname, lname, username, password, email, complete_hash))
+                    cursor3.execute("INSERT INTO dashboard VALUES (%s, %s, %s, %s,)", (username, "the Earth", "being sustainable", "sign up")) 
 
                 connection2.commit()
                 msg = 'You have successfully registered!'
@@ -322,14 +324,14 @@ def create_app(test_config=None):
                     saved_chall = cursor2.fetchone()
                     upd_saved = saved_chall['saved'] + saved_chall_name
                     # print(upd_progress)
-                    cursor2.execute('UPDATE dashboard  SET progress =%s WHERE user=%s', (upd_saved,current_user))
+                    cursor2.execute('UPDATE dashboard  SET saved =%s WHERE user=%s', (upd_saved,current_user))
                 connection2.commit()
                 connection2.close()
             return redirect(url_for('dash'))
         else:
             msg = 'Please login to access user-only content'
             return render_template("login.html", error = msg)
-            
+
     #function for adding challenge - save section
     @app.route("/compChallenge", methods = ['POST'])
     def compChallenge():
@@ -348,14 +350,15 @@ def create_app(test_config=None):
                     comp_chall = cursor2.fetchone()
                     upd_comp = comp_chall['completed'] + comp_chall_name
                     # print(upd_progress)
-                    cursor2.execute('UPDATE dashboard  SET progress =%s WHERE user=%s', (upd_comp,current_user))
+                    cursor2.execute('UPDATE dashboard  SET completed =%s WHERE user=%s', (upd_comp,current_user))
                 connection2.commit()
                 connection2.close()
             return redirect(url_for('dash'))
         else:
             msg = 'Please login to access user-only content'
             return render_template("login.html", error = msg)
-            
+
+
     @app.route("/css")
     def css():
         return render_template("static/css/style.css") 
