@@ -19,7 +19,7 @@
 	<body>
 		<!--Navbar-->
 		<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #86E49E;">
-			<a class="navbar-brand" href="{{ url_for('home') }}"><img src = "static/logo.png" width="30" height="30" alt="">(Yo)UB Sustainable</a>	
+			<a class="navbar-brand" href="{{ url_for('home') }}"><img src = "static/logo.png" width="30" height="30" alt="">(Yo)UB Sustainable</a>
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
 			</button>
@@ -41,6 +41,7 @@
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
 					{% if session['logged_in'] == True %}
+					<p>Hello {{session.username}}!</p>
 						<li>
 							<a href="{{ url_for('logout') }}" class="btn btn-outline-danger my-2 my-sm-0">Logout</a>
 						</li>
@@ -51,9 +52,9 @@
 					{% endif %}
 				</ul>
 			</div>
-		</nav>	
+		</nav>
 		<!--end of Navbar-->
-	
+
 		<div class="container">
 			<div class="container">
 				<div class="row">
@@ -115,7 +116,7 @@
 							<!--Not Friends List-->
 							<div class="col greenborder">
 								<table>
-								{% if notFriendList | length <= 5 %}	
+								{% if notFriendList | length <= 5 %}
 									{% for notFriend in notFriendList%}
 										<tr>
 											<td>
@@ -125,7 +126,7 @@
 											<td>
 												<form action = "/addFriend" method = "POST">
 													<button name = "notFriend" type = "submit" value = "{{ notFriend['name'] }}" class="btn btn-secondary btnbtm">Add Friend</button>
-												</form>	
+												</form>
 											</td>
 										</tr>
 									{% endfor %}
@@ -139,7 +140,7 @@
 											<td>
 												<form action = "/addFriend" method = "POST">
 													<button name = "notFriend" type = "submit" value = "{{ notFriendList[notFriend]['name'] }}" class="btn btn-secondary btnbtm">Add Friend</button>
-												</form>	
+												</form>
 											</td>
 										</tr>
 									{% endfor %}
@@ -148,7 +149,7 @@
 											<button href = "#" class = "btn btn-secondary btnbtm">Load More</button>
 										</td>
 									</tr>
-								{% endif %}	
+								{% endif %}
 								</table>
 							</div>
 						</div>
@@ -159,7 +160,7 @@
 				</div>
 			</div>
 		</div>
-	
+
 	<!-- Optional JavaScript -->
 	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
 	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
