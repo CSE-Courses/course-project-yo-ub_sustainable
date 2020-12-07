@@ -228,7 +228,7 @@ def create_app(test_config=None):
                 session['pro_pic'] = complete_hash
                 with connection2.cursor() as cursor3:
                     cursor3.execute('INSERT INTO accounts VALUES (NULL, %s, %s, %s, %s, %s, %s)', (fname, lname, username, password, email, complete_hash))
-                    cursor3.execute('INSERT INTO dashboard VALUES (%s, NULL, NULL, NULL)', (username))
+                    cursor3.execute('INSERT INTO dashboard VALUES (%s, '', '', '')', (username))
 
                 connection2.commit()
                 msg = 'You have successfully registered!'
