@@ -129,6 +129,7 @@
         <br>
       <div class = "row">
         <button type="button" class="btn btn-secondary col-4">SAVE</button>
+
         {% if session['logged_in'] == True %}
         <a href="{{ url_for('dash') }}" class="btn btn-secondary col-4" id="select">SELECT</a>
         <?php
@@ -144,6 +145,7 @@
         {% else %}
         <a href="#" class="btn btn-secondary col-12">SELECT</a>
         {% endif %}
+
         <button type="button" class="btn btn-secondary col-4">COMPLETED</button>
       </div>
     </div>

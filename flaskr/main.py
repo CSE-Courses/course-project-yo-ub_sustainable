@@ -18,6 +18,8 @@ import pymysql.cursors
 
 import random
 from users import Users
+#new import for custom challenge html page
+from challenge import newChallenge
 
 # mysql = MySQL()
 
@@ -110,6 +112,11 @@ def create_app(test_config=None):
     @app.route("/challengeCustom")
     def chall_pg7():
         return render_template("challenge_pages/custom_challenge.html")
+
+    #Addition for new Custom Challenge specific page
+    @app.route("/newChallengeCustom")
+    def chall_pg8():
+        return render_template("new_custom_challenge.html", newCC = newChallenge)
 
     @app.route("/friends")
     def friend():
@@ -237,6 +244,32 @@ def create_app(test_config=None):
             msg = 'Please enter your information.'
         
         return render_template("signup.html", msg = msg)
+
+    #function for custom challenge form
+    @app.route("/addingcustom", methods = ['GET', 'POST'])
+    def addingcustom():
+        msg = ''
+        if request.method == 'POST' and 'challengeName' in request.form and 'shortDescription' in request.form and 'SelectDuration' in request.form and 'SelectCategory' in request.form and 'theImpact' in request.form and 'Suggestions' in request.form:
+            challengeName = request.form['challengeName']
+            shortDescription = request.form['shortDescription']
+            SelectDuration = request.form['SelectDuration']
+            SelectCategory = request.form['SelectCategory']
+            theImpact = request.form['theImpact']
+            suggestionsHelp = request.form['Suggestions']
+
+            newChallenge['name'] = challengeName
+            newChallenge['description'] = shortDescription 
+            newChallenge['duration'] = SelectDuration 
+            newChallenge['category'] = SelectCategory 
+            newChallenge['impact'] = theImpact 
+            newChallenge['suggestions'] = suggestionsHelp  
+  
+        elif request.method == 'POST':
+            #Form is empty
+            msg = 'Please enter all informaton for Custom Challenge.'
+        
+        #return render_template("challenge_pages/custom_challenge.html", msg = msg, newCC = newChallenge)
+        return redirect(url_for('chall_pg8'))
 
     @app.route("/css")
     def css():
