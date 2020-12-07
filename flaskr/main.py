@@ -201,6 +201,8 @@ def create_app(test_config=None):
             username = request.form['username']
             password = request.form['password']
             email = request.form['email']
+            fname = request.form['fname']
+            lname = request.form['lname']
             connection2 = pymysql.connect(host='us-cdbr-east-02.cleardb.com',
                     user='b33b6415873ff5',
                     password='d1a1b9a1',
@@ -227,8 +229,8 @@ def create_app(test_config=None):
                 complete_hash = ('https://www.gravatar.com/avatar/{}?d=identicon&s={}'.format(hash_str, 128))
                 session['pro_pic'] = complete_hash
                 with connection2.cursor() as cursor3:
-                    cursor3.execute('INSERT INTO accounts VALUES (NULL, %s, %s, %s, %s, %s, %s)', (fname, lname, username, password, email, complete_hash))
-                    cursor3.execute('INSERT INTO dashboard VALUES (%s, NULL, NULL, NULL)', (username))
+                    cursor3.execute("INSERT INTO accounts VALUES (NULL, %s, %s, %s, %s, %s, %s)", (fname, lname, username, password, email, complete_hash))
+                    cursor3.execute("INSERT INTO dashboard VALUES (%s, %s, %s, %s,)", (username, "the Earth", "being sustainable", "sign up")) 
 
                 connection2.commit()
                 msg = 'You have successfully registered!'
@@ -249,95 +251,113 @@ def create_app(test_config=None):
     @app.route("/addingcustom", methods = ['GET', 'POST'])
     def addingcustom():
         msg = ''
-        if request.method == 'POST' and 'challengeName' in request.form and 'shortDescription' in request.form and 'SelectDuration' in request.form and 'SelectCategory' in request.form and 'theImpact' in request.form and 'Suggestions' in request.form:
-            challengeName = request.form['challengeName']
-            shortDescription = request.form['shortDescription']
-            SelectDuration = request.form['SelectDuration']
-            SelectCategory = request.form['SelectCategory']
-            theImpact = request.form['theImpact']
-            suggestionsHelp = request.form['Suggestions']
+        if session.get('logged_in') == True:
+            if request.method == 'POST' and 'challengeName' in request.form and 'shortDescription' in request.form and 'SelectDuration' in request.form and 'SelectCategory' in request.form and 'theImpact' in request.form and 'Suggestions' in request.form:
+                challengeName = request.form['challengeName']
+                shortDescription = request.form['shortDescription']
+                SelectDuration = request.form['SelectDuration']
+                SelectCategory = request.form['SelectCategory']
+                theImpact = request.form['theImpact']
+                suggestionsHelp = request.form['Suggestions']
 
-            newChallenge['name'] = challengeName
-            newChallenge['description'] = shortDescription 
-            newChallenge['duration'] = SelectDuration 
-            newChallenge['category'] = SelectCategory 
-            newChallenge['impact'] = theImpact 
-            newChallenge['suggestions'] = suggestionsHelp  
-  
-        elif request.method == 'POST':
-            #Form is empty
-            msg = 'Please enter all informaton for Custom Challenge.'
+                newChallenge['name'] = challengeName
+                newChallenge['description'] = shortDescription 
+                newChallenge['duration'] = SelectDuration 
+                newChallenge['category'] = SelectCategory 
+                newChallenge['impact'] = theImpact 
+                newChallenge['suggestions'] = suggestionsHelp  
+      
+            elif request.method == 'POST':
+                #Form is empty
+                msg = 'Please enter all informaton for Custom Challenge.'
         
-        #return render_template("challenge_pages/custom_challenge.html", msg = msg, newCC = newChallenge)
-        return redirect(url_for('chall_pg8'))
+            #return render_template("challenge_pages/custom_challenge.html", msg = msg, newCC = newChallenge)
+            return redirect(url_for('chall_pg8'))
+        else:
+            msg = 'Please login to access user-only content'
+            return render_template("login.html", error = msg)
+        
 
      #function for adding challenge
     
     #function for adding challenge - in progress section
     @app.route("/addChallenge", methods = ['POST'])
     def addChallenge():
-        if request.method == 'POST':
-            added_chall_name = request.form['addChallenge']
-            current_user = session['username']
-            connection2 = pymysql.connect(host='us-cdbr-east-02.cleardb.com',
-                             user='b33b6415873ff5',
-                             password='d1a1b9a1',
-                             db='heroku_1e2700f5b989c0b',
-                             charset='utf8mb4',
-                             cursorclass=pymysql.cursors.DictCursor)
-            with connection2.cursor() as cursor2:
-                cursor2.execute('SELECT progress FROM dashboard WHERE user = %s', (current_user))
-                progress_chall = cursor2.fetchone()
-                upd_progress = progress_chall['progress'] + added_chall_name
-                # print(upd_progress)
-                cursor2.execute('UPDATE dashboard  SET progress =%s WHERE user=%s', (upd_progress,current_user))
-            connection2.commit()
-            connection2.close()
-        return redirect(url_for('dash'))
-    
+        if session.get('logged_in') == True:
+            if request.method == 'POST':
+                added_chall_name = request.form['addChallenge']
+                current_user = session['username']
+                connection2 = pymysql.connect(host='us-cdbr-east-02.cleardb.com',
+                                 user='b33b6415873ff5',
+                                 password='d1a1b9a1',
+                                 db='heroku_1e2700f5b989c0b',
+                                 charset='utf8mb4',
+                                 cursorclass=pymysql.cursors.DictCursor)
+                with connection2.cursor() as cursor2:
+                    cursor2.execute('SELECT progress FROM dashboard WHERE user = %s', (current_user))
+                    progress_chall = cursor2.fetchone()
+                    upd_progress = progress_chall['progress'] + added_chall_name
+                    # print(upd_progress)
+                    cursor2.execute('UPDATE dashboard  SET progress =%s WHERE user=%s', (upd_progress,current_user))
+                connection2.commit()
+                connection2.close()
+            return redirect(url_for('dash'))
+        else:
+            msg = 'Please login to access user-only content'
+            return render_template("login.html", error = msg)
+        
     #function for adding challenge - save section
     @app.route("/saveChallenge", methods = ['POST'])
     def saveChallenge():
-        if request.method == 'POST':
-            saved_chall_name = request.form['saveChallenge']
-            current_user = session['username']
-            connection2 = pymysql.connect(host='us-cdbr-east-02.cleardb.com',
-                             user='b33b6415873ff5',
-                             password='d1a1b9a1',
-                             db='heroku_1e2700f5b989c0b',
-                             charset='utf8mb4',
-                             cursorclass=pymysql.cursors.DictCursor)
-            with connection2.cursor() as cursor2:
-                cursor2.execute('SELECT saved FROM dashboard WHERE user = %s', (current_user))
-                saved_chall = cursor2.fetchone()
-                upd_saved = saved_chall['saved'] + saved_chall_name
-                # print(upd_progress)
-                cursor2.execute('UPDATE dashboard  SET progress =%s WHERE user=%s', (upd_saved,current_user))
-            connection2.commit()
-            connection2.close()
-        return redirect(url_for('dash'))
+        if session.get('logged_in') == True:
+            if request.method == 'POST':
+                saved_chall_name = request.form['saveChallenge']
+                current_user = session['username']
+                connection2 = pymysql.connect(host='us-cdbr-east-02.cleardb.com',
+                                 user='b33b6415873ff5',
+                                 password='d1a1b9a1',
+                                 db='heroku_1e2700f5b989c0b',
+                                 charset='utf8mb4',
+                                 cursorclass=pymysql.cursors.DictCursor)
+                with connection2.cursor() as cursor2:
+                    cursor2.execute('SELECT saved FROM dashboard WHERE user = %s', (current_user))
+                    saved_chall = cursor2.fetchone()
+                    upd_saved = saved_chall['saved'] + saved_chall_name
+                    # print(upd_progress)
+                    cursor2.execute('UPDATE dashboard  SET saved =%s WHERE user=%s', (upd_saved,current_user))
+                connection2.commit()
+                connection2.close()
+            return redirect(url_for('dash'))
+        else:
+            msg = 'Please login to access user-only content'
+            return render_template("login.html", error = msg)
 
     #function for adding challenge - save section
     @app.route("/compChallenge", methods = ['POST'])
     def compChallenge():
-        if request.method == 'POST':
-            comp_chall_name = request.form['compChallenge']
-            current_user = session['username']
-            connection2 = pymysql.connect(host='us-cdbr-east-02.cleardb.com',
-                             user='b33b6415873ff5',
-                             password='d1a1b9a1',
-                             db='heroku_1e2700f5b989c0b',
-                             charset='utf8mb4',
-                             cursorclass=pymysql.cursors.DictCursor)
-            with connection2.cursor() as cursor2:
-                cursor2.execute('SELECT completed FROM dashboard WHERE user = %s', (current_user))
-                comp_chall = cursor2.fetchone()
-                upd_comp = comp_chall['completed'] + comp_chall_name
-                # print(upd_progress)
-                cursor2.execute('UPDATE dashboard  SET progress =%s WHERE user=%s', (upd_comp,current_user))
-            connection2.commit()
-            connection2.close()
-        return redirect(url_for('dash'))
+        if session.get('logged_in') == True:
+            if request.method == 'POST':
+                comp_chall_name = request.form['compChallenge']
+                current_user = session['username']
+                connection2 = pymysql.connect(host='us-cdbr-east-02.cleardb.com',
+                                 user='b33b6415873ff5',
+                                 password='d1a1b9a1',
+                                 db='heroku_1e2700f5b989c0b',
+                                 charset='utf8mb4',
+                                 cursorclass=pymysql.cursors.DictCursor)
+                with connection2.cursor() as cursor2:
+                    cursor2.execute('SELECT completed FROM dashboard WHERE user = %s', (current_user))
+                    comp_chall = cursor2.fetchone()
+                    upd_comp = comp_chall['completed'] + comp_chall_name
+                    # print(upd_progress)
+                    cursor2.execute('UPDATE dashboard  SET completed =%s WHERE user=%s', (upd_comp,current_user))
+                connection2.commit()
+                connection2.close()
+            return redirect(url_for('dash'))
+        else:
+            msg = 'Please login to access user-only content'
+            return render_template("login.html", error = msg)
+
 
     @app.route("/css")
     def css():
