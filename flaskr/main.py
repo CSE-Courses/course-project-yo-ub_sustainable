@@ -96,9 +96,9 @@ def create_app(test_config=None):
         return render_template("challenge_pages/custom_challenge.html")
 
     #Addition for new Custom Challenge specific page
-    @app.route("/challengeCustom")
+    @app.route("/newChallengeCustom")
     def chall_pg8():
-        return render_template("new_custom_challenge.html")
+        return render_template("new_custom_challenge.html", newCC = newChallenge)
 
     @app.route("/friends")
     def friend():  
@@ -198,26 +198,27 @@ def create_app(test_config=None):
     @app.route("/addingcustom", methods = ['GET', 'POST'])
     def addingcustom():
         msg = ''
-        if request.method == 'POST' and 'challengeName' in request.form and 'shortDescription' in request.form and 'SelectDuration' in request.form and 'SelectCategory' in request.form and 'theImpact' in request.form and 'sugegstionsHelp' in request.form:
+        if request.method == 'POST' and 'challengeName' in request.form and 'shortDescription' in request.form and 'SelectDuration' in request.form and 'SelectCategory' in request.form and 'theImpact' in request.form and 'Suggestions' in request.form:
             challengeName = request.form['challengeName']
             shortDescription = request.form['shortDescription']
             SelectDuration = request.form['SelectDuration']
             SelectCategory = request.form['SelectCategory']
             theImpact = request.form['theImpact']
-            sugegstionsHelp = request.form['sugegstionsHelp']
+            suggestionsHelp = request.form['Suggestions']
 
             newChallenge['name'] = challengeName
             newChallenge['description'] = shortDescription 
             newChallenge['duration'] = SelectDuration 
             newChallenge['category'] = SelectCategory 
             newChallenge['impact'] = theImpact 
-            newChallenge['suggestions'] = sugegstionsHelp 
+            newChallenge['suggestions'] = suggestionsHelp  
   
         elif request.method == 'POST':
             #Form is empty
             msg = 'Please enter all informaton for Custom Challenge.'
         
-        return render_template("challenge_pages/custom_challenge.html", msg = msg, newCC = newChallenge)
+        #return render_template("challenge_pages/custom_challenge.html", msg = msg, newCC = newChallenge)
+        return redirect(url_for('chall_pg8'))
 
     @app.route("/css")
     def css():
